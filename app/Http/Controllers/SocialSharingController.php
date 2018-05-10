@@ -226,8 +226,8 @@ class SocialSharingController extends Controller
         SendTo::Facebook(
             'link',
             [
-                'link' => 'https://github.com/toolkito/laravel-social-auto-posting',
-                'message' => 'Laravel social auto posting'
+                'link' => 'https://www.uniecampus.it',
+                'message' => 'Messaggio Pubblicato dalla Piattaforma SocialCampus'
             ]
         );
         dd('Youe message send successfully!!');
