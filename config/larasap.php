@@ -17,10 +17,10 @@ return [
     ],
 
     'facebook' => [
-        'app_id' => '',
-        'app_secret' => '',
+        'app_id' => '436565923449961',
+        'app_secret' => '686b13653d59f252c935fcbfecb680ab',
         'default_graph_version' => '',
-        'page_access_token' => ''
+        'page_access_token' => 'EAAGNDezJzGkBANWioqLH0DidsZBLZB2WtsS7f6mOZA8bB4UEBFjTOKI58TrwWH6L3yao6nwkRaVmAJncsvl0dxzhZCJ7DsQEg5wFOMsOLYvqf0dQzNS8bZBzZCnDW8xD5f0PZAk3qvQJ2ZCx9JTPwZBjX2ZBfA3uKFZASyHSAlF2OzCQgZDZD'
     ]
 
 ];
