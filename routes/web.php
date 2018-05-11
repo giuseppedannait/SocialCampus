@@ -11,9 +11,18 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
+});*/
+
+Route::get('/', function () {
+    return view('home');
 });
+
+Route::get('login', 'LoginController@showLoginPage');
+
+Route::get('dashboard', 'LoginController@showDashBoard')
+    ->middleware(['auth']);
 
 // Send text message to Telegram Route
 Route::get('send-text-message-to-telegram', 'SocialSharingController@sendTextMessageToTelegram');
