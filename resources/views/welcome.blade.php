@@ -84,11 +84,12 @@
                 </div>
 
                 <div class="links">
-                    <a href="https://laravel.com/docs">Facebook</a>
-                    <a href="https://laracasts.com">Twitter</a>
-                    <a href="https://laravel-news.com">Telegram</a>
-                    <a href="https://forge.laravel.com">Instagram</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Telegram</a>
+                    <a href="#">Instagram</a>
                 </div>
+
             </div>
         </div>
     </body>
