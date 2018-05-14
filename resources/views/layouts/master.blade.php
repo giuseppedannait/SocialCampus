@@ -33,13 +33,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Backendtime Social Login</a>
+          <a class="navbar-brand" href="/">SocialCampus Login</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="{{ action('LoginController@showLoginPage') }}">Login <i class="fa fa-sign-in"></i></a>
-                    </li>
+                    @if(auth()->check())
+                        @include('partials.user-menu')
+                    @else
+                        <li>
+                            <a href="{{ action('LoginController@showLoginPage') }}">
+                                Effettua il Login <i class="fa fa-sign-in"></i>
+                            </a>
+                        </li>
+                    @endif
             </ul>
         </div>
       </div>

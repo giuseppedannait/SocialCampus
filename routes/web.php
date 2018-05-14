@@ -24,6 +24,15 @@ Route::get('login', 'LoginController@showLoginPage');
 Route::get('dashboard', 'LoginController@showDashBoard')
     ->middleware(['auth']);
 
+// Route that check the provider and then perform the Login
+Route::get('logout', 'LoginController@logout');
+
+Route::get('login/{provider}', 'LoginController@auth')
+    ->where(['provider' => 'facebook|google|twitter']);
+
+Route::get('login/{provider}/callback', 'LoginController@login')
+    ->where(['provider' => 'facebook|google|twitter']);
+
 // Send text message to Telegram Route
 Route::get('send-text-message-to-telegram', 'SocialSharingController@sendTextMessageToTelegram');
 
