@@ -153,3 +153,11 @@ Route::get('send-photo-to-facebook', 'SocialSharingController@sendPhotoToFaceboo
 
 // Send video to Facebook Route
 Route::get('send-video-to-facebook', 'SocialSharingController@sendVideoToFacebook');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/admin', 'AdminController@index');
+ 
+Route::get('/superadmin', 'SuperAdminController@index');
