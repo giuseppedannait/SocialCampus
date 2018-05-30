@@ -4,7 +4,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('page-title') - Backendtime Social Login</title>
+    
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
+    
+    <title>@yield('page-title') - Social Campus Login</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css">
@@ -22,7 +27,9 @@
             margin-bottom: 3px;
         }
     </style>
+    
   </head>
+  
   <body>
   <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -39,12 +46,17 @@
             <ul class="nav navbar-nav navbar-right">
                     @if(auth()->check())
                         @include('partials.user-menu')
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
                     @else
-                        <li>
+<!--                      <li>
                             <a href="{{ action('LoginController@showLoginPage') }}">
                                 Effettua il Login <i class="fa fa-sign-in"></i>
                             </a>
-                        </li>
+                        </li>-->
+                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Registrati') }}</a></li>
                     @endif
             </ul>
         </div>

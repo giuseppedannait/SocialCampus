@@ -17,7 +17,7 @@ class LoginController extends Controller
 
     public function showLoginPage()
     {
-       return view('login');
+       return view('sociallogin');
     }
 
     public function showDashboard()

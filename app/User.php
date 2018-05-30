@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -60,11 +61,17 @@ class User extends Authenticatable
       }
       return false;
     }
+    
     public function hasRole($role)
     {
       if ($this->roles()->where('name', $role)->first()) {
         return true;
       }
       return false;
+    }
+    
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = Hash::needsRehash($password) ? Hash::make($password) : $password;
     }
 }
