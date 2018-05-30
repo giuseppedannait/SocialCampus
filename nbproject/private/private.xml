@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/app/Http/Controllers/Auth/LoginController.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/app/Http/Controllers/HomeController.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/database/migrations/2018_05_26_184456_create_role_user_table.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/app/Providers/AuthServiceProvider.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/.env</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/app/Http/Controllers/AdminController.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/resources/views/admin/home.blade.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/app/Http/Controllers/SuperAdminController.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/app/Http/Kernel.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/app/User.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/app/Http/Middleware/CheckRole.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/database/migrations/2018_05_26_184049_create_roles_table.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/resources/views/superadmin/home.blade.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/app/Role.php</file>
+            <file>file:/Volumes/Disco%20Dati/_AMSSTUDIO/DEV/SocialCampus/routes/web.php</file>
+        </group>
+    </open-files>
+</project-private>
