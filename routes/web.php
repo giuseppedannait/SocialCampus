@@ -29,6 +29,9 @@ Route::get('/facebook/userinfo', 'FacebookController@getUserInfo');
 
 Route::get('/facebook/index', 'FacebookController@index');
 
+// User Controller
+Route::resource('users', 'UserController');
+
 
 // Generate a login URL
 Route::get('/facebook/login', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)

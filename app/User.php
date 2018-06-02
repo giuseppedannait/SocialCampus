@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use SammyK\LaravelFacebookSdk\SyncableGraphNodeTrait;
-
+use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable
 {
@@ -21,10 +21,10 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
-    protected static $graph_node_field_aliases = [
+    /*protected static $graph_node_field_aliases = [
         'id' => 'facebook_user_id',
         'name' => 'name',
-    ];
+    ];*/
 
     /**
      * The attributes that should be hidden for arrays.
