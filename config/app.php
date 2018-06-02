@@ -211,7 +211,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Facebook' => SammyK\LaravelFacebookSdk\FacebookFacade::class,
 
-
     ],
 
 ];

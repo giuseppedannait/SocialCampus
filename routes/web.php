@@ -23,6 +23,13 @@ Route::get('/admin', 'AdminController@index');
  
 Route::get('/superadmin', 'SuperAdminController@index');
 
+Route::get('/facebook/pages', 'FacebookController@showPages');
+
+Route::get('/facebook/userinfo', 'FacebookController@getUserInfo');
+
+Route::get('/facebook/index', 'FacebookController@index');
+
+
 // Generate a login URL
 Route::get('/facebook/login', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
 {
