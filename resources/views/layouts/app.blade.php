@@ -35,7 +35,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-                        <li><a href="{{ url('/users') }}">Users</a></li>
+                        @guest
+                        @else
+                            <li><a href="{{ url('/users') }}">Gestione Utenti</a></li>
+                        @endguest
                     </ul>
 
                     <!-- Right Side Of Navbar -->
