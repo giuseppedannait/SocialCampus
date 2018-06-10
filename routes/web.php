@@ -32,6 +32,12 @@ Route::get('/facebook/index', 'FacebookController@index');
 // User Controller
 Route::resource('users', 'UserController');
 
+// Social Controller
+Route::resource('socials', 'SocialController');
+
+// Social Channell
+Route::resource('channels', 'SocialChannelController');
+
 
 // Generate a login URL
 Route::get('/facebook/login', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
@@ -101,11 +107,11 @@ Route::get('/facebook/callback', function(SammyK\LaravelFacebookSdk\LaravelFaceb
 
     // Create the user if it does not exist or update the existing entry.
     // This will only work if you've added the SyncableGraphNodeTrait to your User model.
-    $user = App\User::createOrUpdateGraphNode($facebook_user);
+    // $user = App\User::createOrUpdateGraphNode($facebook_user);
 
     // Log the user into Laravel
-    Auth::login($user);
+    // Auth::login($user);
 
-    return redirect('/')->with('message', 'Successfully logged in with Facebook');
+    return redirect('/channels/create')->with('message', 'Successfully logged in with Facebook');
 });
  

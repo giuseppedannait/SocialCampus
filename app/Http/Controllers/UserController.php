@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use DB;
 use Illuminate\Http\Request;
 Use App\Http\Controllers\SuperAdminController;
 Use App\Http\Controllers\AdminController;
+use SammyK\LaravelFacebookSdk\SyncableGraphNodeTrait;
 
 class UserController extends Controller
 {
+    use SyncableGraphNodeTrait;
+
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('role:SOCIAL_ADMIN');
     }
 
     /**
@@ -21,7 +26,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->paginate();
+        $users = User::with('roles')->latest()->paginate();
         return view('users.index', compact('users',$users));
     }
 
@@ -68,7 +73,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.update', compact('user', $user));
+        $user = User::with('roles')->where('id', $user->id)->first();
+        $selectedRole = @$user->roles->first()->name;
+        $roles = DB::table('roles')->orderBy('name', 'asc')->pluck('name', 'id');
+
+        return view('users.update', compact('user', 'roles', 'selectedRole'));
     }
 
     /**

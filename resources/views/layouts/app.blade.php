@@ -17,9 +17,12 @@
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
-    <!-- Styles -->
+     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    {{--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">--}}
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css">
+
 </head>
 <body>
     <div id="app">
@@ -37,7 +40,8 @@
                     <ul class="navbar-nav mr-auto">
                         @guest
                         @else
-                            <li><a href="{{ url('/users') }}">Gestione Utenti</a></li>
+                            <li><a class="nav-link" href="{{ url('/users') }}">Gestione Utenti</a></li>
+                            <li><a class="nav-link" href="{{ url('/channels') }}">Gestione Canali Social</a></li>
                         @endguest
                     </ul>
 
@@ -50,7 +54,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->name }} ( {{ Auth::user()->roles->first()->name }} ) <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">

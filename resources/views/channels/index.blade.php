@@ -9,35 +9,34 @@
         @endif
         <div class="panel panel-default">
             <div class="panel-heading">
-                User Listing
-                <a href="{{ route('users.create') }}" class="btn btn-success btn-xs">Add User</a>
+                Canali Associati all'Utente :
+                <a href="{{ route('channels.create') }}" class="btn btn-success btn-xs">Aggiungi Canale</a>
             </div>
             <div class="panel-body">
-                @if (count($users))
+                @if (count($channels))
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>Username</th>
-                                <th>Email</th>
-                                <th>Creato il</th>
-                                <th>Aggiornato il</th>
-                                <th>Ruolo</th>
-                                <th>Action</th>
+                                <th>Canale</th>
+                                <th>Nome</th>
+                                <th>Tipo</th>
+                                <th>Connesso il</th>
+                                <th>Ultimo Accesso</th>
+                                <th>Azioni</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($users as $user)
+                            @foreach($channels as $channel)
                                 <tr>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->created_at->format('m-d-Y') }}</td>
-                                    <td>{{ $user->updated_at->format('m-d-Y') }}</td>
-                                    <td>{{ @$user->roles->first()->name }}</td>
+                                    <td><a class="btn btn-social-icon btn-facebook"><span class="fa fa-facebook"></span></a></td>
+                                    <td>{{ $channel->name }}</td>
+                                    <td>{{ $channel->description }}</td>
+                                    <td>{{ $channel->created_at->format('m-d-Y') }}</td>
+                                    <td>{{ $channel->updated_at->format('m-d-Y') }}</td>
                                     <td>
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success btn-xs">Edit</a>
-                                        <a href="{{ route('users.show', $user->id) }}" class="btn btn-info btn-xs">View</a>
-                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline-block">
+                                        <a href="{{ route('channels.show', $channel->id) }}" class="btn btn-info btn-xs">Dettagli</a>
+                                        <form action="{{ route('channels.destroy', $channel->id) }}" method="POST" style="display:inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}
                                             <button class="btn btn-danger btn-xs">
@@ -51,11 +50,11 @@
                         </table>
                     </div>
                     <div class="text-center">
-                        {{ $users->links() }}
+                        {{--{{ $channels->links() }}--}}
                     </div>
                 @else
                     <p class="alert alert-info">
-                        No Listing Found
+                        Nessun canale attivo!
                     </p>
                 @endif
             </div>

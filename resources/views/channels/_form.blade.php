@@ -24,10 +24,5 @@
 </div>
 
 <div class="form-group">
-    {{ Form::label('role', 'Ruolo') }} <em>*</em>
-    {{ Form::select('role', $roles, $user->roles->pluck('id'), ['class' => 'form-control', 'id' => 'role']) }}
-</div>
-
-<div class="form-group">
     {{ Form::submit('Submit', ['class' => 'btn btn-success']) }}
 </div>
