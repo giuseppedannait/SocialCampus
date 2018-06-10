@@ -19,7 +19,7 @@
                     <div class="col-md-8 col-md-offset-1">
                         <ul>
                             <li>
-                                <a href="{{ $fb_login_url }}" class="btn btn-block btn-lg btn-social btn-facebook social-button">
+                                <a href="/login/facebook" class="btn btn-block btn-lg btn-social btn-facebook social-button">
                                     <span class="fa fa-facebook"></span> Effettua il Login Facebook
                                 </a>
                             </li>

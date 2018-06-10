@@ -18,13 +18,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'facebook_access_token'
     ];
 
-    protected static $graph_node_field_aliases = [
+    /*protected static $graph_node_field_aliases = [
         'id' => 'facebook_user_id',
         'name' => 'name',
-    ];
+    ];*/
 
     /**
      * The attributes that should be hidden for arrays.
@@ -32,7 +32,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'access_token'
+        'password', 'remember_token',
     ];
     
     public function roles()

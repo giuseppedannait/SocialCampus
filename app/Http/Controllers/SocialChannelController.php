@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use SammyK;
 use App\SocialChannel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -31,9 +30,7 @@ class SocialChannelController extends Controller
             $role = Auth::user()->role;
         }
 
-        //$channels = DB::table('social_channels')->where('user_id',1)->orderBy('name')->paginate();
         $channels = SocialChannel::latest()->where('user_id',$user)->orderBy('name')->paginate();
-        //return $channels;
         return view('channels.index', compact('channels',$channels));
     }
 
@@ -44,15 +41,7 @@ class SocialChannelController extends Controller
      */
     public function create()
     {
-
         // Facebook
-
-        $fb = app(SammyK\LaravelFacebookSdk\LaravelFacebookSdk::class);
-
-        // Send an array of permissions to request
-        $fb_login_url = $fb->getLoginUrl(['email']);
-
-        return view('channels.create', compact('fb_login_url', $fb_login_url));
     }
 
     /**
