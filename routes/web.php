@@ -11,6 +11,7 @@
 |
 */
 
+<<<<<<< HEAD
 /*Route::get('/', function () {
     return view('welcome');
 });*/
@@ -43,6 +44,46 @@ Route::get('/facebook/login', function(SammyK\LaravelFacebookSdk\LaravelFacebook
     echo '<a href="' . $login_url . '">Login with Facebook</a>';
 });
 
+=======
+Route::get('/', function () {
+    return view('home');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/admin', 'AdminController@index');
+ 
+Route::get('/superadmin', 'SuperAdminController@index');
+
+Route::get('/facebook/pages', 'FacebookController@showPages');
+
+Route::get('/facebook/userinfo', 'FacebookController@getUserInfo');
+
+Route::get('/facebook/index', 'FacebookController@index');
+
+// User Controller
+Route::resource('users', 'UserController');
+
+// Social Controller
+Route::resource('socials', 'SocialController');
+
+// Social Channell
+Route::resource('channels', 'SocialChannelController');
+
+
+// Generate a login URL
+Route::get('/facebook/login', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
+{
+    // Send an array of permissions to request
+    $login_url = $fb->getLoginUrl(['email']);
+
+    // Obviously you'd do this in blade :)
+    echo '<a href="' . $login_url . '">Login with Facebook</a>';
+});
+
+>>>>>>> Reset
 // Endpoint that is redirected to after an authentication attempt
 Route::get('/facebook/callback', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
 {
@@ -101,6 +142,7 @@ Route::get('/facebook/callback', function(SammyK\LaravelFacebookSdk\LaravelFaceb
 
     // Create the user if it does not exist or update the existing entry.
     // This will only work if you've added the SyncableGraphNodeTrait to your User model.
+<<<<<<< HEAD
     $user = App\User::createOrUpdateGraphNode($facebook_user);
 
     // Log the user into Laravel
@@ -153,3 +195,13 @@ Route::get('send-photo-to-facebook', 'SocialSharingController@sendPhotoToFaceboo
 
 // Send video to Facebook Route
 Route::get('send-video-to-facebook', 'SocialSharingController@sendVideoToFacebook');
+=======
+    // $user = App\User::createOrUpdateGraphNode($facebook_user);
+
+    // Log the user into Laravel
+    // Auth::login($user);
+
+    return redirect('/channels/create')->with('message', 'Successfully logged in with Facebook');
+});
+ 
+>>>>>>> Reset
