@@ -24,13 +24,18 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/twitter/login" class="btn btn-block btn-lg btn-social btn-twitter social-button">
+                                <a href="/login/twitter" class="btn btn-block btn-lg btn-social btn-twitter social-button">
                                     <span class="fa fa-twitter"></span> Effettua il Login con Twitter
                                 </a>
                             </li>
                             <li>
-                                <a href="/googleplus/login" class="btn btn-block btn-lg btn-social btn-google social-button">
+                                <a href="/login/google" class="btn btn-block btn-lg btn-social btn-google social-button">
                                     <span class="fa fa-google"></span> Effettua il Login con Google
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/login/instagram" class="btn btn-block btn-lg btn-social btn-instagram social-button">
+                                    <span class="fa fa-instagram"></span> Effettua il Login con Instagram
                                 </a>
                             </li>
                         </ul>

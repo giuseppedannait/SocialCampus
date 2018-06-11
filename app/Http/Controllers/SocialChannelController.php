@@ -41,7 +41,7 @@ class SocialChannelController extends Controller
      */
     public function create()
     {
-        // Facebook
+        return view('channels.create');
     }
 
     /**

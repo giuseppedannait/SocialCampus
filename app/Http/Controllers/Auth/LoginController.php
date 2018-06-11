@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\SocialChannel;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -80,7 +81,19 @@ class LoginController extends Controller
             ]
         );
 
-        Auth::login($user, true);
+        // Auth::login($user, true);
+
+        /*$pages = SocialChannel::updateOrCreate(
+
+            [
+                'email' => $auth_user->email
+            ],
+            [
+                'facebook_access_token' => $auth_user->token,
+                'name'  =>  $auth_user->name
+            ]
+
+        );*/
 
         return redirect()->to('/channels'); // Redirect to a secure page
     }
