@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\GraphController;
 
 class SocialChannel extends Model
 {
@@ -11,4 +12,5 @@ class SocialChannel extends Model
      *
      * @var array
      */
+
 }

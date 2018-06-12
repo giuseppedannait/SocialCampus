@@ -36,6 +36,7 @@ class GraphController extends Controller
 
     public function getFacebookPages(){
 
+
         try {
 
             $response = $this->api->get('/me/accounts', Auth::user()->facebook_access_token);
@@ -54,10 +55,11 @@ class GraphController extends Controller
         try {
             $pages = $response->getGraphEdge()->asArray();
 
-                    return $pages;
+                return $pages;
+
             } catch (FacebookSDKException $e) {
             dd($e); // handle exception
-        }
+            }
     }
 
     public function publishToProfile(Request $request){
@@ -131,8 +133,5 @@ class GraphController extends Controller
             dd($e); // handle exception
         }
     }
-
-
-
 
 }

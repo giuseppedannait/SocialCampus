@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\GraphController;
+
 use App\SocialChannel;
 use App\User;
+
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 use Illuminate\Support\Facades\Auth;
@@ -81,8 +84,15 @@ class LoginController extends Controller
             ]
         );
 
-        // Auth::login($user, true);
+        Auth::login($user, true);
 
+
+        /*$fb = new Facebook();
+                $pages = new GraphController($fb);
+
+                $user_pages = $pages->getFacebookPages();
+
+                return $user_pages;*/
         /*$pages = SocialChannel::updateOrCreate(
 
             [

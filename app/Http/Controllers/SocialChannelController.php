@@ -7,6 +7,8 @@ use App\SocialChannel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
+use Laravel\Socialite\Contracts\User as ProviderUser;
+
 class SocialChannelController extends Controller
 {
     /**
