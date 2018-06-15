@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Social;
 
 class SocialChannel extends Model
 {
@@ -11,4 +12,24 @@ class SocialChannel extends Model
      *
      * @var array
      */
+
+    protected $fillable = [
+        'name', 'type', 'category', 'access_token', 'social_id', 'user_id'
+    ];
+
+    public $timestamps = true;
+
+    public function socials()
+    {
+        return $this
+            ->hasOne('App\Social','id', 'social_id');
+    }
+
+    public function users()
+    {
+        return $this
+            ->hasOne('App\User')
+            ->withTimestamps();
+    }
+
 }

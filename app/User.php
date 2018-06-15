@@ -17,12 +17,18 @@ class User extends Authenticatable
      *
      * @var array
      */
+<<<<<<< HEAD
     protected $fillable = ['email'];
+=======
+    protected $fillable = [
+        'name', 'email', 'password', 'facebook_access_token', 'facebook_user_id'
+    ];
+>>>>>>> Facebook
 
-    protected static $graph_node_field_aliases = [
+    /*protected static $graph_node_field_aliases = [
         'id' => 'facebook_user_id',
         'name' => 'name',
-    ];
+    ];*/
 
     /**
      * The attributes that should be hidden for arrays.
@@ -30,7 +36,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'access_token'
+        'password', 'remember_token',
     ];
 <<<<<<< HEAD
 
@@ -78,6 +84,12 @@ class User extends Authenticatable
         return true;
       }
       return false;
+    }
+
+    public function social_channel()
+    {
+        return $this->belongsToMany('App\SocialChannel')
+            ->withTimestamps();
     }
 }
 >>>>>>> Reset

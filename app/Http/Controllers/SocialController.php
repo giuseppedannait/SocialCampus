@@ -5,16 +5,28 @@ namespace App\Http\Controllers;
 use App\Social;
 use Illuminate\Http\Request;
 
+use Auth;
+
 class SocialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+//      $this->middleware('role:SOCIAL_SUPER_ADMIN');
+
+    }
+
+
     public function index()
     {
+        if(Auth::check()) {
+            $user = Auth::user()->id;
+            $role = Auth::user()->role;
+        }
 
+        $socials = Social::latest()->orderBy('name')->paginate();
+        return view('social.index', compact('socials',$socials));
     }
 
     /**

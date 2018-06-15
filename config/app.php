@@ -148,6 +148,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        Laravel\Socialite\SocialiteServiceProvider::class, // added line for Socialite
 
         /*
          * Package Service Providers...
@@ -220,7 +221,11 @@ return [
 =======
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+<<<<<<< HEAD
 >>>>>>> Reset
+=======
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class, // added line for Socialite
+>>>>>>> Facebook
 
     ],
 
