@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+    use App\SocialChannel;
     use Facebook\Exceptions\FacebookSDKException;
     use Facebook\Facebook;
     use Illuminate\Http\Request;
@@ -10,11 +11,13 @@ namespace App\Http\Controllers;
 class GraphController extends Controller
 {
     private $api;
+
     public function __construct(Facebook $fb)
     {
         $this->middleware(function ($request, $next) use ($fb) {
             $fb->setDefaultAccessToken(Auth::user()->facebook_access_token);
             $this->api = $fb;
+            dd($next($request));
             return $next($request);
         });
     }
@@ -35,7 +38,6 @@ class GraphController extends Controller
     }
 
     public function getFacebookPages(){
-
 
         try {
 
@@ -60,6 +62,18 @@ class GraphController extends Controller
             } catch (FacebookSDKException $e) {
             dd($e); // handle exception
             }
+    }
+
+    public function getFacebookPagesToArray(){
+
+        $fb = new Facebook();
+        $fb->setDefaultAccessToken(Auth::user()->facebook_access_token);
+
+        $response = $fb->get('/me/accounts');
+
+        $pages = $response->getGraphEdge()->asArray();
+
+        return $pages;
     }
 
     public function publishToProfile(Request $request){
@@ -132,6 +146,31 @@ class GraphController extends Controller
         } catch (FacebookSDKException $e) {
             dd($e); // handle exception
         }
+    }
+
+    public function getFacebookPagePosts($page_name){
+
+        $fb = new Facebook();
+        $fb->setDefaultAccessToken(Auth::user()->facebook_access_token);
+
+        $page = new SocialChannel();
+
+        $page_token = $page::where('name', $page_name)
+            ->pluck('access_token')
+            ->first();
+
+        try {
+
+            $response = $fb->get('me?fields=id,name,posts', $page_token);
+
+            $posts = $response->getGraphNode()->asArray();
+
+            return $posts;
+
+        } catch (FacebookSDKException $e) {
+            dd($e); // handle exception
+        }
+
     }
 
 }

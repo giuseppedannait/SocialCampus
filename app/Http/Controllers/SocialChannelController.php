@@ -4,10 +4,17 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\SocialChannel;
+use App\Social;
+use App\User;
+
+use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Facebook;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use Laravel\Socialite\Contracts\User as ProviderUser;
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\GraphController;
 
 class SocialChannelController extends Controller
 {
@@ -32,8 +39,8 @@ class SocialChannelController extends Controller
             $role = Auth::user()->role;
         }
 
-        $channels = SocialChannel::latest()->where('user_id',$user)->orderBy('name')->paginate();
-        return view('channels.index', compact('channels',$channels));
+        $channels = SocialChannel::with('socials')->latest()->where('user_id',$user)->orderBy('name')->paginate();
+        return view('channels.index', compact('channels', $channels));
     }
 
     /**
@@ -63,9 +70,12 @@ class SocialChannelController extends Controller
      * @param  \App\SocialChannel  $socialChannel
      * @return \Illuminate\Http\Response
      */
-    public function show(SocialChannel $socialChannel)
+    public function show($socialChannel)
     {
-        return view('channels.show', compact('SocialChannel', $socialChannel));
+
+        $channel = SocialChannel::where('name', $socialChannel)->first();
+        $posts = $this->getPosts($channel, 'facebook');
+        return view('channels.show', ['channels' => $channel, 'posts' => $posts]);
     }
 
     /**
@@ -91,6 +101,11 @@ class SocialChannelController extends Controller
         //
     }
 
+    public function add()
+    {
+        //
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -102,8 +117,117 @@ class SocialChannelController extends Controller
         //
     }
 
-    public function ShowChannel()
+    /**
+     * Redirect the user to the Facebook authentication page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function redirectToProvider($provider)
     {
-        //
+        switch ($provider) {
+
+            case 'facebook':
+                return Socialite::driver('facebook')->scopes(["manage_pages", "publish_pages"])->redirect();
+                break;
+            case 'twitter':
+                echo "i equals 1";
+                break;
+            case 'instagram':
+                echo "i equals 2";
+                break;
+        }
+
     }
+
+    /**
+     * Obtain the user information from Facebook.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function handleProviderCallback(Request $request, $provider)
+    {
+        if (!$request->has('code') || $request->has('denied')) {
+            return redirect('/');
+        }
+
+        $auth_user = Socialite::driver($provider)->user();
+
+        switch ($provider) {
+
+            case 'facebook':
+
+                $user = User::updateOrCreate(
+                    [
+                        'email' => $auth_user->email
+                    ],
+                    [
+                        'facebook_user_id' => $auth_user->id,
+                        'facebook_access_token' => $auth_user->token,
+                        'name'  =>  $auth_user->name
+                    ]
+                );
+
+                $fb = new Facebook();
+
+                $graph = new GraphController($fb);
+
+                $pages = $graph->getFacebookPagesToArray();
+
+                $type = 'Page';
+                $social = Social::where('name', 'facebook')
+                    ->pluck('id')
+                    ->first();
+                $user_id = Auth::user()->id;
+
+                foreach ($pages as $id => $details) {
+                    $social_channel = SocialChannel::updateOrCreate(['id' => $id], [
+                        'name' => $details['name'],
+                        'type' => $type,
+                        'category' => $details['category'],
+                        'access_token' => $details['access_token'],
+                        'social_id' => $social,
+                        'user_id' => $user_id
+                    ]);
+                }
+
+                break;
+
+            case 'twitter':
+                echo "twitter";
+                break;
+
+            case 'instagram':
+                echo "instagram";
+                break;
+        }
+
+        return redirect()->to('/channels'); // Redirect to a secure page
+    }
+
+    public function getPosts(SocialChannel $socialChannel, $provider){
+
+        switch ($provider) {
+
+            case 'facebook':
+
+                $fb = new Facebook();
+                $graph = new GraphController($fb);
+
+                $posts = $graph->getFacebookPagePosts($socialChannel->name);
+
+                return $posts;
+
+                break;
+
+            case 'twitter':
+                echo "twitter";
+                break;
+
+            case 'instagram':
+                echo "instagram";
+                break;
+        }
+
+    }
+
 }

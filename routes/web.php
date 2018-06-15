@@ -34,11 +34,19 @@ Route::resource('channels', 'SocialChannelController');
 
 // Socialite Route
 
+Route::get('login/{provider}', 'SocialChannelController@redirectToProvider')
+    ->where(['provider' => 'facebook|google|twitter']);
+
+Route::get('login/{provider}/callback', 'SocialChannelController@handleProviderCallback')
+    ->where(['provider' => 'facebook|google|twitter']);
+
+/*// Socialite Route
+
 Route::get('login/{provider}', 'Auth\LoginController@redirectToFacebookProvider')
     ->where(['provider' => 'facebook|google|twitter']);
 
 Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderFacebookCallback')
-    ->where(['provider' => 'facebook|google|twitter']);
+    ->where(['provider' => 'facebook|google|twitter']);*/
 
 // Facebook Zone
 
@@ -47,9 +55,19 @@ Route::group(['middleware' => [
 ]], function(){
     Route::get('/facebook/user', 'GraphController@retrieveUserProfile');
 
-    Route::get('/facebook/page', 'GraphController@getFacebookPages');
+    Route::get('/facebook/page', 'GraphController@getFacebookPages')->name('facebook_page');
 
     Route::post('/facebook/user', 'GraphController@publishToProfile');
 
     Route::post('/facebook/page', 'GraphController@publishToPage');
+
+    Route::get('/facebook/{name}/posts', 'GraphController@getFacebookPagePosts')->name('facebook.posts.show');
 });
+
+/*Route::get('/facebook/user', 'GraphController@retrieveUserProfile');
+
+Route::get('/facebook/page', 'GraphController@getFacebookPages');
+
+Route::post('/facebook/user', 'GraphController@publishToProfile');
+
+Route::post('/facebook/page', 'GraphController@publishToPage');*/

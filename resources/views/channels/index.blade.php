@@ -21,6 +21,7 @@
                                 <th>Canale</th>
                                 <th>Nome</th>
                                 <th>Tipo</th>
+                                <th>Categoria</th>
                                 <th>Connesso il</th>
                                 <th>Ultimo Accesso</th>
                                 <th>Azioni</th>
@@ -29,13 +30,14 @@
                             <tbody>
                             @foreach($channels as $channel)
                                 <tr>
-                                    <td><a class="btn btn-social-icon btn-facebook"><span class="fa fa-facebook"></span></a></td>
+                                    <td><a class="btn btn-social-icon btn-{{ @$channel->socials->first()->name }}"><span class="fa fa-{{ @$channel->socials->first()->name }}"></span></a></td>
                                     <td>{{ $channel->name }}</td>
-                                    <td>{{ $channel->description }}</td>
+                                    <td>{{ $channel->type }}</td>
+                                    <td>{{ $channel->category }}</td>
                                     <td>{{ $channel->created_at->format('m-d-Y') }}</td>
                                     <td>{{ $channel->updated_at->format('m-d-Y') }}</td>
                                     <td>
-                                        <a href="{{ route('channels.show', $channel->id) }}" class="btn btn-info btn-xs">Dettagli</a>
+                                        <a href="{{ route('channels.show', $channel->name ) }}" class="btn btn-info btn-xs">Fetch Posts</a>
                                         <form action="{{ route('channels.destroy', $channel->id) }}" method="POST" style="display:inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}

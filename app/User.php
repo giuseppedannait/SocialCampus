@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'facebook_access_token'
+        'name', 'email', 'password', 'facebook_access_token', 'facebook_user_id'
     ];
 
     /*protected static $graph_node_field_aliases = [
@@ -72,5 +72,11 @@ class User extends Authenticatable
         return true;
       }
       return false;
+    }
+
+    public function social_channel()
+    {
+        return $this->belongsToMany('App\SocialChannel')
+            ->withTimestamps();
     }
 }

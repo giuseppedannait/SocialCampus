@@ -13,6 +13,9 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
@@ -42,6 +45,7 @@
                         @else
                             <li><a class="nav-link" href="{{ url('/users') }}">Gestione Utenti</a></li>
                             <li><a class="nav-link" href="{{ url('/channels') }}">Gestione Canali Social</a></li>
+                            <li><a class="nav-link" href="{{ url('/socials') }}">Gestione Social</a></li>
                         @endguest
                     </ul>
 
