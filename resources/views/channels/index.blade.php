@@ -9,9 +9,12 @@
         @endif
         <div class="panel panel-default">
             <div class="panel-heading">
-                Canali Associati all'Utente :
-                <a href="{{ route('channels.create') }}" class="btn btn-success btn-xs">Aggiungi Canale</a>
-                <a href="{{ route('channels.add') }}" class="btn btn-success btn-xs">Aggiungi Post Multicanale</a>
+                <div>
+                    <a href="{{ route('channels.create') }}" class="btn btn-success btn-xs">Aggiungi Canale</a>
+                    <a href="{{ route('channels.add') }}" class="btn btn-success btn-xs">Aggiungi Post Multicanale</a>
+                </div>
+                <br>
+                <div>Canali Associati all'Utente :</div>
             </div>
             <div class="panel-body">
                 @if (count($channels))

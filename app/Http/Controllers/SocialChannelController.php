@@ -115,8 +115,20 @@ class SocialChannelController extends Controller
     public function publish(Request $request)
     {
         $post=[];
+        $post['type']='simple';
 
-        $message = $request->input('message');
+        $post['message'] = $request->input('message');
+
+        if ($request->source) {
+
+            $fileName = "SocialCampus".time().'.'.request()->source->getClientOriginalExtension();
+
+            $post['source'] = storage_path('app/').$request->source->storeAs('images',$fileName);
+            $post['type'] = 'image';
+        }
+
+        if ($request->input('link')) { $post['link'] = $request->input('link'); $post['type'] = 'link';}
+
         $channels = $request->input('channels');
 
         foreach($channels as $channel)
@@ -132,7 +144,7 @@ class SocialChannelController extends Controller
 
                     $graph = new GraphController($fb);
 
-                    $post[$channel] = $graph->publishToPage($channel, $message);
+                    $post[$channel] = $graph->publishToPage($channel, $post);
 
                     break;
                 case 'twitter':

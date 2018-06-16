@@ -7,13 +7,13 @@
                 {{	session()->get('status') }}
             </p>
         @endif
-            <form action="{{ route('channel.post') }}" style="display:inline-block" method="POST">
+            <form action="{{ route('channel.post') }}" style="display:inline-block" method="POST" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <p>Inserisci il post :</p>
+                    <p>Componi il post :</p>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -23,6 +23,15 @@
                                     <td>
                                         <div class="form-group">
                                             <textarea name="message" value="" rows="5" class="form-control">Cosa vuoi pubblicare ?</textarea>
+                                            <small id="messageHelp" class="form-text text-muted">Inserire il testo del messaggio</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" value="" name="link">
+                                            <small id="urlHelp" class="form-text text-muted">Inserire l'eventuale URL da condividere</small>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="file" class="form-control-file" name="source" id="fileToUpload" aria-describedby="fileHelp">
+                                            <small id="fileHelp" class="form-text text-muted">Scegliere l'eventuale immagine da caricare. L'immagine non deve superare la dimensione di 2MB.</small>
                                         </div>
                                     </td>
                                 </tr>
@@ -32,6 +41,7 @@
                 </div>
                 <div class="panel-heading">
                     Scegli il canale sul quale pubblicare :
+                    <small id="channelHelp" class="form-text text-muted">Prego, scegliere almeno un canale.</small>
                 </div>
                 <div class="panel-body">
                     @if (count($channels))

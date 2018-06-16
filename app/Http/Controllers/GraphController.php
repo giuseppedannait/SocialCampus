@@ -116,9 +116,7 @@ class GraphController extends Controller
         }
     }
 
-    public function publishToPage($channel, $message){
-
-        $post="";
+    public function publishToPage($channel, $post){
 
         $page = new SocialChannel();
 
@@ -133,13 +131,55 @@ class GraphController extends Controller
             ->pluck('channel_id')
             ->first();
 
-        try {
-                $post = $fb->post('/' . $page_id . '/feed', array('message' => $message), $page_access_token);
-            } catch (FacebookSDKException $e) {
-                dd($e); // handle exception
-            }
+        $fb_response="";
 
-        return $post;
+        switch ($post['type']) {
+
+            case 'simple':
+
+                try {
+                    $fb_response = $fb->post('/' . $page_id . '/feed', $post, $page_access_token);
+                } catch (FacebookSDKException $e) {
+                    dd($e); // handle exception
+                }
+
+                break;
+
+            case 'image' :
+
+                try {
+
+                    if($post['source']) {
+                        $post['source'] = $fb->fileToUpload($post['source']);
+                    }
+                    else {
+                        $post['source']="";
+                    }
+
+                } catch (FacebookSDKException $e) {
+                    dd($e); // handle exception
+                }
+
+                try {
+                    $fb_response = $fb->post('/' . $page_id . '/photos', $post, $page_access_token);
+                } catch (FacebookSDKException $e) {
+                    dd($e); // handle exception
+                }
+
+                break;
+
+            case 'link':
+
+                try {
+                    $fb_response = $fb->post('/' . $page_id . '/feed', $post, $page_access_token);
+                } catch (FacebookSDKException $e) {
+                    dd($e); // handle exception
+                }
+
+                break;
+        }
+
+        return $fb_response;
 
     }
 
