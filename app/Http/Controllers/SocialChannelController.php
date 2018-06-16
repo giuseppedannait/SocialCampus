@@ -103,7 +103,55 @@ class SocialChannelController extends Controller
 
     public function add()
     {
-        //
+        if(Auth::check()) {
+            $user = Auth::user()->id;
+            $role = Auth::user()->role;
+        }
+
+        $channels = SocialChannel::with('socials')->latest()->where('user_id',$user)->orderBy('name')->paginate();
+        return view('channels.add', compact('channels', $channels));
+    }
+
+    public function publish(Request $request)
+    {
+        $post=[];
+
+        $message = $request->input('message');
+        $channels = $request->input('channels');
+
+        foreach($channels as $channel)
+        {
+            $provider_id = SocialChannel::with('socials')->where('id', $channel)->pluck('social_id')->first();
+            $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
+
+            switch ($provider) {
+
+                case 'facebook':
+
+                    $fb = new Facebook();
+
+                    $graph = new GraphController($fb);
+
+                    $post[$channel] = $graph->publishToPage($channel, $message);
+
+                    break;
+                case 'twitter':
+                    echo "i equals 1";
+                    break;
+                case 'instagram':
+                    echo "i equals 2";
+                    break;
+            }
+        }
+
+        if ($post) {
+            session()->flash('status', ' Post inserito correttamente');
+        }
+        else{
+            session()->flash('status', ' Post non inserito. Controllare eventuali errori segnalati.');
+        }
+
+        return redirect()->action('SocialChannelController@index');
     }
 
     /**
@@ -180,7 +228,8 @@ class SocialChannelController extends Controller
                 $user_id = Auth::user()->id;
 
                 foreach ($pages as $id => $details) {
-                    $social_channel = SocialChannel::updateOrCreate(['id' => $id], [
+                    $social_channel = SocialChannel::updateOrCreate(['channel_id' => $details['id']], [
+                        'channel_id' => $details['id'],
                         'name' => $details['name'],
                         'type' => $type,
                         'category' => $details['category'],

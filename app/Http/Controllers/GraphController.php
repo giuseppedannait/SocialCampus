@@ -116,18 +116,48 @@ class GraphController extends Controller
         }
     }
 
-    public function publishToPage(Request $request){
+    public function publishToPage($channel, $message){
 
-        $page_id = 'YOUR_PAGE_ID';
+        $post="";
+
+        $page = new SocialChannel();
+
+        $fb = new Facebook();
+        $fb->setDefaultAccessToken(Auth::user()->facebook_access_token);
+
+        $page_access_token = $page::where('id', $channel)
+            ->pluck('access_token')
+            ->first();
+
+        $page_id = $page::where('id', $channel)
+            ->pluck('channel_id')
+            ->first();
 
         try {
-            $post = $this->api->post('/' . $page_id . '/feed', array('message' => $request->message), $this->getPageAccessToken($page_id));
+                $post = $fb->post('/' . $page_id . '/feed', array('message' => $message), $page_access_token);
+            } catch (FacebookSDKException $e) {
+                dd($e); // handle exception
+            }
 
-        $post = $post->getGraphNode()->asArray();
+        return $post;
 
-        dd($post);
+    }
 
-    } catch (FacebookSDKException $e) {
+    public function publishImageToPage(Request $request){
+
+        $absolute_image_path = '/var/www/SocialCampus/storage/app/images/socialmediatimemanagement.jpg';
+
+        try {
+
+            $response = $this->api->post('/me/feed', [
+                'message' => $request->message,
+                'source'    =>  $this->api->fileToUpload($absolute_image_path)
+            ])->getGraphNode()->asArray();
+
+            if($response['id']){
+                // post created
+            }
+        } catch (FacebookSDKException $e) {
             dd($e); // handle exception
         }
     }

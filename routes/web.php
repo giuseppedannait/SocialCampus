@@ -32,6 +32,10 @@ Route::resource('socials', 'SocialController');
 // Social Channell
 Route::resource('channels', 'SocialChannelController');
 
+Route::get('/channel/add', 'SocialChannelController@add')->name('channels.add');
+
+Route::put('/channel/post', 'SocialChannelController@publish')->name('channel.post');;
+
 // Socialite Route
 
 Route::get('login/{provider}', 'SocialChannelController@redirectToProvider')

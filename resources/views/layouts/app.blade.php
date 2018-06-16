@@ -15,6 +15,7 @@
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -22,6 +23,7 @@
 
      <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
     {{--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">--}}
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css">
@@ -46,6 +48,7 @@
                             <li><a class="nav-link" href="{{ url('/users') }}">Gestione Utenti</a></li>
                             <li><a class="nav-link" href="{{ url('/channels') }}">Gestione Canali Social</a></li>
                             <li><a class="nav-link" href="{{ url('/socials') }}">Gestione Social</a></li>
+                            <li><a class="nav-link" href="{{ url('/channel/add') }}">Gestione Post</a></li>
                         @endguest
                     </ul>
 
