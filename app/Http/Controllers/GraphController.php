@@ -231,7 +231,7 @@ class GraphController extends Controller
 
         try {
 
-            $response = $fb->get('me?fields=id,name,posts', $page_token);
+            $response = $fb->get('me?fields=id,name,picture,posts{message,created_time,attachments}', $page_token);
 
             $posts = $response->getGraphNode()->asArray();
 
