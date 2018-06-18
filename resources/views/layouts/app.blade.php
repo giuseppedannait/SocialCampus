@@ -43,13 +43,31 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+
                         @guest
+
                         @else
-                            <li><a class="nav-link" href="{{ url('/users') }}">Gestione Utenti</a></li>
-                            <li><a class="nav-link" href="{{ url('/channels') }}">Gestione Canali Social</a></li>
-                            <li><a class="nav-link" href="{{ url('/socials') }}">Gestione Social</a></li>
-                            <li><a class="nav-link" href="{{ url('/channel/add') }}">Gestione Post</a></li>
+
+                            @if (isset(Auth::user()->roles->first()->name))
+
+                                @if (Auth::user()->roles->first()->name === 'SOCIAL_USER')
+                                    <li><a class="nav-link" href="{{ url('/channels') }}">Canali Social</a></li>
+                                    <li><a class="nav-link" href="{{ url('/channel/add') }}">Post</a></li>
+                                @elseif (Auth::user()->roles->first()->name === 'SOCIAL_ADMIN')
+                                    <li><a class="nav-link" href="{{ url('/users') }}">Utenti</a></li>
+                                    <li><a class="nav-link" href="{{ url('/channels') }}">Canali Social</a></li>
+                                    <li><a class="nav-link" href="{{ url('/channel/add') }}">Post</a></li>
+                                @elseif (Auth::user()->roles->first()->name === 'SOCIAL_SUPER_ADMIN')
+                                    <li><a class="nav-link" href="{{ url('/users') }}">Utenti</a></li>
+                                    <li><a class="nav-link" href="{{ url('/channels') }}">Canali Social</a></li>
+                                    <li><a class="nav-link" href="{{ url('/socials') }}">Provider Social</a></li>
+                                    <li><a class="nav-link" href="{{ url('/channel/add') }}">Post</a></li>
+                                @endif
+
+                            @endif
+
                         @endguest
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->

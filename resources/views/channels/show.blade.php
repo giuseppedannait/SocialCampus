@@ -17,7 +17,9 @@
         <div class="col-sm-12 col-sm-offset-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div><a href="{{ route('channels.index') }}" class="btn btn-danger btn-xs"><< Back</a></div>
+                    <a href="{{ route('channels.index') }}" class="btn btn-danger btn-xs"><< Back</a>
+                    <a href="{{ route('facebook.posts.show', ['name' => $channels->name]) }}" class="btn btn-info btn-xs">Visualizza JSON</a>
+                    <a href="{{ route('channels.show', $channels->name) }}" class="btn btn-success btn-xs">Aggiorna i dati</a>
                     <div></div>
                     Channel Feed
                 </div>
@@ -32,7 +34,7 @@
                                 <div style="display:table;">
                                     <div><a class="fb-stream-name" href="http://www.facebook.com/{{ $posts['id'] }}" title="{{ $posts['id'] }}" target="_blank">{{ $posts['name'] }}</a></div>
                                     <div><a class="fb-stream-name" href="http://www.facebook.com/{{ $posts['id'] }}" title="{{ $posts['id'] }}" target="_blank">ID: {{ $posts['id'] }}</a></div>
-                                    <div><a class="fb-stream-name" href="http://www.facebook.com/{{ $posts['id'] }}" title="{{ $posts['id'] }}" target="_blank">Fans:</a></div>
+                                    <div><a class="fb-stream-name" href="http://www.facebook.com/{{ $posts['id'] }}" title="{{ $posts['id'] }}" target="_blank">Fans totali: {{ $posts['fan_count'] }}</a></div>
                                 </div>
                             </div>
                             <div style="clear:both;"></div>
@@ -90,12 +92,8 @@
             </div>
         </div>
     </div>
-
-        <div class="col-sm-12 col-sm-offset-6">
-            <a href="{{ route('facebook.posts.show', ['name' => $channels->name]) }}" class="btn btn-danger btn-xs">Visualizza JSON</a>
-            <a href="{{ route('channels.show', 1) }}" class="btn btn-success btn-xs">Aggiorna i dati</a>
         </div>
+</div>
 
-    </div>
 
 @endsection

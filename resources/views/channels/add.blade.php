@@ -22,16 +22,16 @@
                                 <tr>
                                     <td>
                                         <div class="form-group">
-                                            <textarea name="message" value="" rows="5" class="form-control">Cosa vuoi pubblicare ?</textarea>
                                             <small id="messageHelp" class="form-text text-muted">Inserire il testo del messaggio</small>
+                                            <textarea name="message" value="" rows="5" class="form-control">Cosa vuoi pubblicare ?</textarea>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" value="" name="link">
                                             <small id="urlHelp" class="form-text text-muted">Inserire l'eventuale URL da condividere</small>
+                                            <input type="text" value="" name="link">
                                         </div>
                                         <div class="form-group">
-                                            <input type="file" class="form-control-file" name="source" id="fileToUpload" aria-describedby="fileHelp">
                                             <small id="fileHelp" class="form-text text-muted">Scegliere l'eventuale immagine da caricare. L'immagine non deve superare la dimensione di 2MB.</small>
+                                            <input type="file" class="form-control-file" name="source" id="fileToUpload" aria-describedby="fileHelp">
                                         </div>
                                     </td>
                                 </tr>

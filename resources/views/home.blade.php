@@ -12,7 +12,7 @@
                         </div>
                     @endif
                     <h2>Benvenuti su SocialCampus.</h2>
-                    <h3>A Social App powered by eCampus.</h3>
+                    <h3>A Social Media Management App powered by eCampus.</h3>
                     <h4>Developed by Ing. Giuseppe D'Anna.</h4>
                 </div>
             </div>
