@@ -190,7 +190,10 @@ class SocialChannelController extends Controller
                 return Socialite::driver('facebook')->scopes(["manage_pages", "publish_pages"])->redirect();
                 break;
             case 'twitter':
-                echo "i equals 1";
+                return Socialite::driver('twitter')->redirect();
+                break;
+            case 'googleplus':
+                echo "i equals 2";
                 break;
             case 'instagram':
                 echo "i equals 2";
@@ -206,15 +209,16 @@ class SocialChannelController extends Controller
      */
     public function handleProviderCallback(Request $request, $provider)
     {
-        if (!$request->has('code') || $request->has('denied')) {
-            return redirect('/');
-        }
 
         $auth_user = Socialite::driver($provider)->user();
 
         switch ($provider) {
 
             case 'facebook':
+
+                if (!$request->has('code') || $request->has('denied')) {
+                    return redirect('/');
+                }
 
                 $user = User::updateOrCreate(
                     [
@@ -254,7 +258,24 @@ class SocialChannelController extends Controller
                 break;
 
             case 'twitter':
-                echo "twitter";
+
+                // $account = SocialTwitterAccount::whereProvider('twitter')->whereProviderUserId($providerUser->getId())->first();
+
+                //if ($account) {
+                //    return $account->user;
+                //} else {
+
+                $user = User::updateOrCreate(
+                    [
+                        'email' => $auth_user->email
+                    ],
+                    [
+                        'facebook_user_id' => $auth_user->id,
+                        'facebook_access_token' => $auth_user->token,
+                        'name'  =>  $auth_user->name
+                    ]
+                );
+
                 break;
 
             case 'instagram':

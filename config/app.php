@@ -149,6 +149,7 @@ return [
         SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class, // added line for Socialite
+        Thujohn\Twitter\TwitterServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -215,6 +216,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, // added line for Socialite
+        'Twitter' => Thujohn\Twitter\Facades\Twitter::class,
 
     ],
 
