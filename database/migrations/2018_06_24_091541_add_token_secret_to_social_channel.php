@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePostsTable extends Migration
+class AddTokenSecretToSocialChannel extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreatePostsTable extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+        Schema::table('social_channels', function (Blueprint $table) {
+            $table->string('access_token_secret')->after('access_token');
         });
     }
 
@@ -26,6 +25,8 @@ class CreatePostsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::table('social_channels', function (Blueprint $table) {
+            $table->dropColumn('access_token_secret');
+        });
     }
 }

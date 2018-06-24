@@ -231,11 +231,36 @@ class GraphController extends Controller
 
         try {
 
-            $response = $fb->get('me?fields=id,name,picture,fan_count,posts{message,created_time,attachments}', $page_token);
+            $response = $fb->get('me?fields=id,name,picture,fan_count,posts{comments,message,created_time,attachments}', $page_token);
 
             $posts = $response->getGraphNode()->asArray();
 
             return $posts;
+
+        } catch (FacebookSDKException $e) {
+            dd($e); // handle exception
+        }
+
+    }
+
+    public function getFacebookCommentsPosts($id){
+
+        $fb = new Facebook();
+        $fb->setDefaultAccessToken(Auth::user()->facebook_access_token);
+
+        $page = new SocialChannel();
+
+        $page_token = $page::where('name', $page_name)
+            ->pluck('access_token')
+            ->first();
+
+        try {
+
+            $response = $fb->get('/'.$id, $page_token);
+
+            $comment = $response->getGraphNode()->asArray();
+
+            return $comment;
 
         } catch (FacebookSDKException $e) {
             dd($e); // handle exception

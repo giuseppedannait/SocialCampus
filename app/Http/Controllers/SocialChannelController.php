@@ -7,14 +7,17 @@ use App\SocialChannel;
 use App\Social;
 use App\User;
 
-use Facebook\Exceptions\FacebookSDKException;
-use Facebook\Facebook;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\GraphController;
+
+use Facebook\Exceptions\FacebookSDKException;
+use Facebook\Facebook;
+
+use Twitter;
 
 class SocialChannelController extends Controller
 {
@@ -147,9 +150,15 @@ class SocialChannelController extends Controller
                     $post[$channel] = $graph->publishToPage($channel, $post);
 
                     break;
+
                 case 'twitter':
-                    echo "i equals 1";
+
+                    $tw = new TwitterController();
+
+                    $post[$channel] = $tw->publishToChannel($channel, $post);
+
                     break;
+
                 case 'instagram':
                     echo "i equals 2";
                     break;
@@ -250,6 +259,7 @@ class SocialChannelController extends Controller
                         'type' => $type,
                         'category' => $details['category'],
                         'access_token' => $details['access_token'],
+                        'access_token_secret' => '',
                         'social_id' => $social,
                         'user_id' => $user_id
                     ]);
@@ -259,13 +269,7 @@ class SocialChannelController extends Controller
 
             case 'twitter':
 
-                // $account = SocialTwitterAccount::whereProvider('twitter')->whereProviderUserId($providerUser->getId())->first();
-
-                //if ($account) {
-                //    return $account->user;
-                //} else {
-
-                $user = User::updateOrCreate(
+                /*$user = User::updateOrCreate(
                     [
                         'email' => $auth_user->email
                     ],
@@ -274,7 +278,27 @@ class SocialChannelController extends Controller
                         'facebook_access_token' => $auth_user->token,
                         'name'  =>  $auth_user->name
                     ]
-                );
+                );*/
+
+                $type = 'Account';
+                $category = 'Profile';
+
+                $social = Social::where('name', $provider)->pluck('id')->first();
+                $user_id = Auth::user()->id;
+
+                if (isset($auth_user)) {
+
+                    $social_channel = SocialChannel::updateOrCreate(['channel_id' => $auth_user->id], [
+                        'channel_id' => $auth_user->id,
+                        'name' => '@'.$auth_user->name.'( '.$auth_user->nickname.' )',
+                        'type' => $type,
+                        'category' => $category,
+                        'access_token' => $auth_user->token,
+                        'access_token_secret' => $auth_user->tokenSecret,
+                        'social_id' => $social,
+                        'user_id' => $user_id
+                    ]);
+                }
 
                 break;
 

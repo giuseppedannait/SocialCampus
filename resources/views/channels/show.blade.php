@@ -87,6 +87,28 @@
                                         @endswitch
                                     @endforeach
                                 @endif
+
+                                @if (isset($post['comments']))
+                                    @foreach($post['comments'] as $comment)
+
+                                        @if (isset($comment['message']))
+                                            <div class="fb-stream-comment">{{ $comment['message'] }}</div>
+                                        @endif
+
+
+                                        @if (isset($comment['created_time']))
+                                            <div style="clear:both;"></div>
+                                            <span class="fb-stream-comment-date"><img class="fb-stream-icon" src="" title="link">Creato il {{ $comment['created_time']->format('Y-m-d H:i:s') }}
+                                                @if (isset($comment['id']))
+                                                    <br><a href="http://www.facebook.com/{{ $comment['id'] }}" target="_blank">Link al commento</a>
+                                                @endif
+                                            </span>
+
+                                            <div style="clear:both;"></div>
+                                        @endif
+
+                                    @endforeach
+                                @endif
                             </div>
                     @endforeach
             </div>

@@ -119,8 +119,22 @@
     display:block;
     margin-bottom:5px;}
 
+.fb-stream-comment-date{ /* MOD */
+    font-size:10px;
+    color:#777;
+    clear:left;
+    display:block;
+    margin-bottom:5px;}
+
 .fb-stream-message{
     font-size: 14px;
+    display:block;
+    margin-bottom:10px;
+    margin-bottom:10px;
+    padding-top: 10px;}
+
+.fb-stream-comment{
+    font-size: 10px;
     display:block;
     margin-bottom:10px;
     margin-bottom:10px;

@@ -34,7 +34,7 @@
                             <tbody>
                             @foreach($channels as $channel)
                                 <tr>
-                                    <td><a class="btn btn-social-icon btn-{{ @$channel->socials->first()->name }}"><span class="fa fa-{{ @$channel->socials->first()->name }}"></span></a></td>
+                                    <td><a class="btn btn-social-icon btn-{{ @$channel->socials->name }}"><span class="fa fa-{{ @$channel->socials->name }}"></span></a></td>
                                     <td>{{ $channel->name }}</td>
                                     <td>{{ $channel->type }}</td>
                                     <td>{{ $channel->category }}</td>
