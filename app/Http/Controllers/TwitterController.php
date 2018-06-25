@@ -101,9 +101,11 @@ class TwitterController extends Controller
             ->pluck('access_token_secret')
             ->first();
 
-        $page_id = $page::where('id', $channel)
-            ->pluck('channel_id')
+        $page_name = $page::where('id', $channel)
+            ->pluck('name')
             ->first();
+
+
 
         Twitter::reconfig([
             'consumer_key' => env('TWITTER_CONSUMER_KEY'),
@@ -116,15 +118,13 @@ class TwitterController extends Controller
 
         try {
 
-            $tw_response = Twitter::getUserTimeline(['screen_name' => $page_id, 'count' => 20, 'format' => 'array']);
-
-            dd($tw_response);
-
-            return $tw_response;
+            $tw_response = Twitter::getUserTimeline(['screen_name' => $page_name, 'count' => 20, 'format' => 'array']);
 
         } catch (Exception $e) {
             dd($e); // handle exception
         }
+
+        return $tw_response;
 
     }
 }

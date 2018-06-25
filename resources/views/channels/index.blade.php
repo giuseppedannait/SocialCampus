@@ -41,7 +41,8 @@
                                     <td>{{ $channel->created_at->format('m-d-Y') }}</td>
                                     <td>{{ $channel->updated_at->format('m-d-Y') }}</td>
                                     <td>
-                                        <a href="{{ route('channels.show', $channel->name ) }}" class="btn btn-info btn-xs">Fetch Posts</a>
+                                        <a href="{{ route('channels.show', $channel->id ) }}" class="btn btn-info btn-xs">Fetch Posts</a>
+                                        <a href="{{ route('channels.show', $channel->id ) }}" class="btn btn-success btn-xs">JSON</a>
                                         <form action="{{ route('channels.destroy', $channel->id) }}" method="POST" style="display:inline-block">
                                             {{ csrf_field() }}
                                             {{ method_field('DELETE') }}

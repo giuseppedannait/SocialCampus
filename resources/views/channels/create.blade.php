@@ -29,11 +29,6 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/login/google" class="btn btn-block btn-lg btn-social btn-google social-button">
-                                    <span class="fa fa-google"></span> Effettua il Login con Google
-                                </a>
-                            </li>
-                            <li>
                                 <a href="/login/instagram" class="btn btn-block btn-lg btn-social btn-instagram social-button">
                                     <span class="fa fa-instagram"></span> Effettua il Login con Instagram
                                 </a>

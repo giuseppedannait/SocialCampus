@@ -76,9 +76,13 @@ class SocialChannelController extends Controller
     public function show($socialChannel)
     {
 
-        $channel = SocialChannel::where('name', $socialChannel)->first();
-        $posts = $this->getPosts($channel, 'facebook');
-        return view('channels.show', ['channels' => $channel, 'posts' => $posts]);
+        $channel = SocialChannel::where('id', $socialChannel)->with('socials')->first();
+
+        $provider_id = SocialChannel::with('socials')->where('id', $socialChannel)->pluck('social_id')->first();
+        $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
+
+        $posts = $this->getPosts($channel, $provider);
+        return view('channels.show', ['channels' => $channel, 'posts' => $posts, 'provider' => $provider]);
     }
 
     /**
@@ -326,7 +330,13 @@ class SocialChannelController extends Controller
                 break;
 
             case 'twitter':
-                echo "twitter";
+
+                $tw = new TwitterController();
+
+                $posts = $tw->getTweetFromChannel($socialChannel->id);
+
+                return $posts;
+
                 break;
 
             case 'instagram':

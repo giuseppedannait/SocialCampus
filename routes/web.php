@@ -66,6 +66,8 @@ Route::group(['middleware' => [
     Route::post('/facebook/page', 'GraphController@publishToPage');
 
     Route::get('/facebook/{name}/posts', 'GraphController@getFacebookPagePosts')->name('facebook.posts.show');
+
+    Route::get('/twitter/{id}/posts', 'TwitterController@getTweetFromChannel')->name('twitter.posts.show');
 });
 
 /*Route::get('/facebook/user', 'GraphController@retrieveUserProfile');
