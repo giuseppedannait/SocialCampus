@@ -257,7 +257,12 @@ class SocialChannelController extends Controller
                 $user_id = Auth::user()->id;
 
                 foreach ($pages as $id => $details) {
-                    $social_channel = SocialChannel::updateOrCreate(['channel_id' => $details['id']], [
+                    $social_channel = SocialChannel::updateOrCreate(
+                        [
+                            'channel_id' => $details['id'],
+                            'user_id' => $user_id
+                        ],
+                        [
                         'channel_id' => $details['id'],
                         'name' => $details['name'],
                         'type' => $type,
@@ -266,7 +271,8 @@ class SocialChannelController extends Controller
                         'access_token_secret' => '',
                         'social_id' => $social,
                         'user_id' => $user_id
-                    ]);
+                        ]
+                    );
                 }
 
                 break;
@@ -278,8 +284,6 @@ class SocialChannelController extends Controller
                         'email' => $auth_user->email
                     ],
                     [
-                        'facebook_user_id' => $auth_user->id,
-                        'facebook_access_token' => $auth_user->token,
                         'name'  =>  $auth_user->name
                     ]
                 );*/

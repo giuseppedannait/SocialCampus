@@ -105,8 +105,6 @@ class TwitterController extends Controller
             ->pluck('name')
             ->first();
 
-
-
         Twitter::reconfig([
             'consumer_key' => env('TWITTER_CONSUMER_KEY'),
             'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),

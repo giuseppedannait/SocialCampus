@@ -149,13 +149,13 @@
                                     <div class="fb-stream-head">
                                         <div class="fb-stream-pic-name">
                                             <div class="fb-stream-pic-container">
-                                                <img class="fb-stream-pic" src="" >
+                                                <img class="fb-stream-pic" src="{{ $posts[1]['user']['profile_image_url'] }}" >
                                             </div>
 
                                             <div style="display:table;">
-                                                <div><a class="fb-stream-name" href="http://www.twitter.com/" title="" target="_blank">{{ $channels->name }}</a></div>
-                                                <div><a class="fb-stream-name" href="http://www.twitter.com/" title="" target="_blank">ID: {{ $channels->channel_id }}</a></div>
-                                                <div><a class="fb-stream-name" href="http://www.twitter.com/" title="" target="_blank">Follower totali: {{ $posts[1]['user']['followers_count'] }}</a></div>
+                                                <div><a class="fb-stream-name" href="http://www.twitter.com/{{ $channels->name }}" title="" target="_blank">{{ $channels->name }}</a></div>
+                                                <div><a class="fb-stream-name" href="http://www.twitter.com/{{ $channels->name }}" title="" target="_blank">ID: {{ $channels->channel_id }}</a></div>
+                                                <div><a class="fb-stream-name" href="http://www.twitter.com/{{ $channels->name }}" title="" target="_blank">Follower totali: {{ $posts[1]['user']['followers_count'] }}</a></div>
                                             </div>
                                         </div>
                                         <div style="clear:both;"></div>
@@ -166,7 +166,7 @@
 
                                             @if (isset($post['created_at']))
                                                 <div style="clear:both;"></div>
-                                                <span class="fb-stream-date"><img class="fb-stream-icon" src="" title="link">Creato il {{ $post['created_at'] }}
+                                                <span class="fb-stream-date"><img class="fb-stream-icon" src="{{ $posts[1]['user']['profile_image_url'] }}" title="link">Creato il {{ $post['created_at'] }}
                                                     @if (isset($post['id']))
                                                         <br><a href="http://www.twitter.com/{{ $post['id'] }}" target="_blank">Link Post</a>
                                                     @endif
