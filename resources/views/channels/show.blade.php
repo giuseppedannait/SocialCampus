@@ -50,9 +50,9 @@
 
                                             @if (isset($post['created_time']))
                                                 <div style="clear:both;"></div>
-                                                <span class="fb-stream-date"><img class="fb-stream-icon" src="{{ $icon }}" title="link">Creato il {{ $post['created_time']->format('Y-m-d H:i:s') }}
+                                                <span class="fb-stream-date"><img class="fb-stream-icon" src="{{ $icon }}" title="link">Creato il {{ $post['created_time']->setTimezone(new DateTimeZone('Europe/Rome'))->format('Y-m-d H:i:s') }}
                                                     @if (isset($post['id']))
-                                                        <br><a href="http://www.facebook.com/{{ $post['id'] }}" target="_blank">Link Post</a>
+                                                        <br><a href="http://www.facebook.com/{{ $post['id'] }}" target="_blank">Vai al Post</a>
                                                     @endif
                                                </span>
                                                 <div style="clear:both;"></div>
@@ -93,25 +93,96 @@
                                                 @endforeach
                                             @endif
 
+                                            @if (isset($post['reactions']))
+                                                @foreach($post['reactions'] as $reaction)
+                                                    @php
+                                                        $NONE=0;
+                                                        $LIKE=0;
+                                                        $LOVE=0;
+                                                        $WOW=0;
+                                                        $HAHA=0;
+                                                        $SAD=0;
+                                                        $ANGRY=0;
+                                                        $THANKFUL=0;
+                                                    @endphp
+
+                                                    @switch($reaction['type'])
+
+                                                        @case('NONE')
+                                                            @php
+                                                                $NONE++;
+                                                            @endphp
+                                                        @break
+
+                                                        @case('LIKE')
+                                                            @php
+                                                                $LIKE++;
+                                                            @endphp
+                                                        @break
+
+                                                        @case('LOVE')
+                                                            @php
+                                                                $LOVE++;
+                                                            @endphp
+                                                        @break
+
+                                                        @case('WOW')
+                                                            @php
+                                                                $WOW++;
+                                                            @endphp
+                                                        @break
+
+                                                        @case('HAHA')
+                                                            @php
+                                                                $HAHA++;
+                                                            @endphp
+                                                        @break
+
+                                                        @case('SAD')
+                                                            @php
+                                                                $SAD++;
+                                                            @endphp
+                                                        @break
+
+                                                        @case('ANGRY')
+                                                            @php()
+                                                                $ANGRY++;
+                                                            @endphp
+                                                        @break
+
+                                                        @case('THANKFUL')
+                                                            @php
+                                                                $THANKFUL++;
+                                                            @endphp
+                                                        @break
+
+                                                    @endswitch
+                                                @endforeach
+                                                    <div class="fb-stream-comment">LIKE : {{ $LIKE }} / LOVE : {{ $LOVE }} / WOW : {{ $WOW }} / HAHA : {{ $HAHA }} / SAD : {{ $SAD }} / ANGRY : {{ $ANGRY }} / THANKFUL : {{ $THANKFUL }}</div>
+                                            @endif
+
                                             @if (isset($post['comments']))
+                                                @php
+                                                    $counter=1;
+                                                @endphp
                                                 @foreach($post['comments'] as $comment)
-
                                                     @if (isset($comment['message']))
-                                                        <div class="fb-stream-comment">{{ $comment['message'] }}</div>
+                                                        <div class="fb-stream-comment">#{{ $counter }} <a href="https://www.facebook.com/profile.php?id={{ $comment['from']['id'] }}" target="_blank">{{ $comment['from']['name'] }}</a> {{ $comment['message'] }}</div>
                                                     @endif
-
 
                                                     @if (isset($comment['created_time']))
-                                                        <div style="clear:both;"></div>
-                                                        <span class="fb-stream-comment-date"><img class="fb-stream-icon" src="" title="link">Creato il {{ $comment['created_time']->format('Y-m-d H:i:s') }}
+                                                        <div class="fb-stream-comment-date"><img class="fb-stream-icon" src="" title="link">Inserito il {{ $comment['created_time']->setTimezone(new DateTimeZone('Europe/Rome'))->format('Y-m-d H:i:s') }}
                                                             @if (isset($comment['id']))
-                                                                <br><a href="http://www.facebook.com/{{ $comment['id'] }}" target="_blank">Link al commento</a>
+                                                                <a href="http://www.facebook.com/{{ $comment['id'] }}" target="_blank">(Vai al commento)</a>
                                                             @endif
-                                                        </span>
+                                                        </div>
 
                                                         <div style="clear:both;"></div>
                                                     @endif
 
+                                                    @php
+                                                        $counter++;
+                                                    @endphp
                                                 @endforeach
                                             @endif
                                         </div>
@@ -168,7 +239,7 @@
                                                 <div style="clear:both;"></div>
                                                 <span class="fb-stream-date"><img class="fb-stream-icon" src="{{ $posts[1]['user']['profile_image_url'] }}" title="link">Creato il {{ $post['created_at'] }}
                                                     @if (isset($post['id']))
-                                                        <br><a href="http://www.twitter.com/{{ $post['id'] }}" target="_blank">Link Post</a>
+                                                        <br><a href="http://www.twitter.com/{{ $post['id'] }}" target="_blank">Vai al Tweet</a>
                                                     @endif
                                                            </span>
                                                 <div style="clear:both;"></div>
@@ -197,7 +268,17 @@
                                                     @endforeach
                                             @endif
 
-                                        </div>
+                                            <div class="fb-stream-comment">
+                                                @if (isset($post['favorite_count']))
+                                                        PREFERITI : {{ $post['favorite_count'] }}
+                                                @endif
+                                                /
+                                                @if (isset($post['retweet_count']))
+                                                    RT : {{ $post['retweet_count'] }}
+                                                @endif
+                                                /
+                                                    COMMENTI : ND
+                                            </div>
                                     @endforeach
                                 </div>
                             </div>

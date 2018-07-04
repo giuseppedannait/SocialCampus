@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\GraphController;
+use App\Http\Controllers\FacebookController;
 
 use App\SocialChannel;
 use App\User;

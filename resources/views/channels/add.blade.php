@@ -57,6 +57,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($channels as $channel)
+                                    @if ($channel->type != 'Profile')
                                         <tr>
                                             <td>
                                                 <div class="form-group">
@@ -70,6 +71,7 @@
                                             <td>{{ $channel->type }}</td>
 
                                         </tr>
+                                    @endif
                                 @endforeach
                                 </tbody>
                             </table>

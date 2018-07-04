@@ -116,7 +116,7 @@ class TwitterController extends Controller
 
         try {
 
-            $tw_response = Twitter::getUserTimeline(['screen_name' => $page_name, 'count' => 20, 'format' => 'array']);
+            $tw_response = Twitter::getUserTimeline(['screen_name' => $page_name, 'count' => 20, 'format' => 'array', 'include_rts' => 'true', 'exclude_replies' => 'false']);
 
         } catch (Exception $e) {
             dd($e); // handle exception

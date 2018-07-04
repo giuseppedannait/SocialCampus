@@ -29,8 +29,10 @@ Route::resource('users', 'UserController');
 // Social Controller
 Route::resource('socials', 'SocialController');
 
-// Social Channell
+// Social Channel
 Route::resource('channels', 'SocialChannelController');
+
+Route::get('/channel/table/{id}', 'SocialChannelController@table')->name('channel.table');
 
 Route::get('/channel/add', 'SocialChannelController@add')->name('channels.add');
 
@@ -39,10 +41,10 @@ Route::put('/channel/post', 'SocialChannelController@publish')->name('channel.po
 // Socialite Route
 
 Route::get('login/{provider}', 'SocialChannelController@redirectToProvider')
-    ->where(['provider' => 'facebook|google|twitter']);
+    ->where(['provider' => 'facebook|instagram|twitter']);
 
 Route::get('login/{provider}/callback', 'SocialChannelController@handleProviderCallback')
-    ->where(['provider' => 'facebook|google|twitter']);
+    ->where(['provider' => 'facebook|instagram|twitter']);
 
 /*// Socialite Route
 
@@ -57,23 +59,23 @@ Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderFace
 Route::group(['middleware' => [
     'auth'
 ]], function(){
-    Route::get('/facebook/user', 'GraphController@retrieveUserProfile');
+    Route::get('/facebook/user', 'FacebookController@retrieveUserProfile');
 
-    Route::get('/facebook/page', 'GraphController@getFacebookPages')->name('facebook_page');
+    Route::get('/facebook/page', 'FacebookController@getFacebookPages')->name('facebook_page');
 
-    Route::post('/facebook/user', 'GraphController@publishToProfile');
+    Route::post('/facebook/user', 'FacebookController@publishToProfile');
 
-    Route::post('/facebook/page', 'GraphController@publishToPage');
+    Route::post('/facebook/page', 'FacebookController@publishToPage');
 
-    Route::get('/facebook/{name}/posts', 'GraphController@getFacebookPagePosts')->name('facebook.posts.show');
+    Route::get('/facebook/{name}/posts', 'FacebookController@getFacebookPagePosts')->name('facebook.posts.show');
 
     Route::get('/twitter/{id}/posts', 'TwitterController@getTweetFromChannel')->name('twitter.posts.show');
 });
 
-/*Route::get('/facebook/user', 'GraphController@retrieveUserProfile');
+/*Route::get('/facebook/user', 'FacebookController@retrieveUserProfile');
 
-Route::get('/facebook/page', 'GraphController@getFacebookPages');
+Route::get('/facebook/page', 'FacebookController@getFacebookPages');
 
-Route::post('/facebook/user', 'GraphController@publishToProfile');
+Route::post('/facebook/user', 'FacebookController@publishToProfile');
 
-Route::post('/facebook/page', 'GraphController@publishToPage');*/
+Route::post('/facebook/page', 'FacebookController@publishToPage');*/

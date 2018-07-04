@@ -34,22 +34,25 @@
                             <tbody>
                             @foreach($channels as $channel)
                                 <tr>
+
                                     <td><a class="btn btn-social-icon btn-{{ @$channel->socials->name }}"><span class="fa fa-{{ @$channel->socials->name }}"></span></a></td>
-                                    <td>{{ $channel->name }}</td>
+                                    <td><a href="http://www.{{ @$channel->socials->name }}.com/{{ $channel->name }}" target="_blank">{{ $channel->name }}</a></td>
                                     <td>{{ $channel->type }}</td>
                                     <td>{{ $channel->category }}</td>
                                     <td>{{ $channel->created_at->format('m-d-Y') }}</td>
                                     <td>{{ $channel->updated_at->format('m-d-Y') }}</td>
                                     <td>
-                                        <a href="{{ route('channels.show', $channel->id ) }}" class="btn btn-info btn-xs">Fetch Posts</a>
-                                        <a href="{{ route('channels.show', $channel->id ) }}" class="btn btn-success btn-xs">JSON</a>
-                                        <form action="{{ route('channels.destroy', $channel->id) }}" method="POST" style="display:inline-block">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}
-                                            <button class="btn btn-danger btn-xs">
-                                                <span>DELETE</span>
-                                            </button>
-                                        </form>
+                                        @if($channel->type != 'Profile')
+                                            <a href="{{ route('channels.show', $channel->id ) }}" class="btn btn-info btn-xs">Fetch Posts</a>
+                                            <a href="{{ route('channel.table', $channel->id ) }}" class="btn btn-success btn-xs">Table</a>
+                                            <form action="{{ route('channels.destroy', $channel->id) }}" method="POST" style="display:inline-block">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                                <button class="btn btn-danger btn-xs">
+                                                    <span>DELETE</span>
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

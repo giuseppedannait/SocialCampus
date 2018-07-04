@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 
 use Laravel\Socialite\Contracts\User as ProviderUser;
 use Laravel\Socialite\Facades\Socialite;
-use App\Http\Controllers\GraphController;
+use App\Http\Controllers\FacebookController;
 
 use Facebook\Exceptions\FacebookSDKException;
 use Facebook\Facebook;
@@ -149,7 +149,7 @@ class SocialChannelController extends Controller
 
                     $fb = new Facebook();
 
-                    $graph = new GraphController($fb);
+                    $graph = new FacebookController($fb);
 
                     $post[$channel] = $graph->publishToPage($channel, $post);
 
@@ -190,6 +190,17 @@ class SocialChannelController extends Controller
         //
     }
 
+    public function table($socialChannel)
+    {
+        $channel = SocialChannel::where('id', $socialChannel)->with('socials')->first();
+
+        $provider_id = SocialChannel::with('socials')->where('id', $socialChannel)->pluck('social_id')->first();
+        $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
+
+        $posts = $this->getPosts($channel, $provider);
+        return view('channels.table', ['channels' => $channel, 'posts' => $posts, 'provider' => $provider]);
+    }
+
     /**
      * Redirect the user to the Facebook authentication page.
      *
@@ -200,16 +211,13 @@ class SocialChannelController extends Controller
         switch ($provider) {
 
             case 'facebook':
-                return Socialite::driver('facebook')->scopes(["manage_pages", "publish_pages"])->redirect();
+                return Socialite::driver('facebook')->scopes(["manage_pages", "publish_pages", "instagram_basic"])->redirect();
                 break;
             case 'twitter':
                 return Socialite::driver('twitter')->redirect();
                 break;
-            case 'googleplus':
-                echo "i equals 2";
-                break;
             case 'instagram':
-                echo "i equals 2";
+                return Socialite::with('instagram')->redirect();
                 break;
         }
 
@@ -233,7 +241,7 @@ class SocialChannelController extends Controller
                     return redirect('/');
                 }
 
-                $user = User::updateOrCreate(
+                /*$user = User::updateOrCreate(
                     [
                         'email' => $auth_user->email
                     ],
@@ -242,11 +250,36 @@ class SocialChannelController extends Controller
                         'facebook_access_token' => $auth_user->token,
                         'name'  =>  $auth_user->name
                     ]
-                );
+                );*/
+
+                $type = 'Profile';
+                $category = ' Personal Account';
+                $social = Social::where('name', 'facebook')
+                    ->pluck('id')
+                    ->first();
+
+                $user_id = Auth::user()->id;
+
+                $social_channel = SocialChannel::updateOrCreate(
+                        [
+                            'channel_id' => $auth_user->id,
+                            'user_id' => $user_id
+                        ],
+                        [
+                            'channel_id' => $auth_user->id,
+                            'name' => $auth_user->name,
+                            'type' => $type,
+                            'category' => $category,
+                            'access_token' => $auth_user->token,
+                            'access_token_secret' => '',
+                            'social_id' => $social,
+                            'user_id' => $user_id
+                        ]
+                    );
 
                 $fb = new Facebook();
 
-                $graph = new GraphController($fb);
+                $graph = new FacebookController($fb);
 
                 $pages = $graph->getFacebookPagesToArray();
 
@@ -254,6 +287,7 @@ class SocialChannelController extends Controller
                 $social = Social::where('name', 'facebook')
                     ->pluck('id')
                     ->first();
+
                 $user_id = Auth::user()->id;
 
                 foreach ($pages as $id => $details) {
@@ -279,17 +313,8 @@ class SocialChannelController extends Controller
 
             case 'twitter':
 
-                /*$user = User::updateOrCreate(
-                    [
-                        'email' => $auth_user->email
-                    ],
-                    [
-                        'name'  =>  $auth_user->name
-                    ]
-                );*/
-
                 $type = 'Account';
-                $category = 'Profile';
+                $category = 'Generic';
 
                 $social = Social::where('name', $provider)->pluck('id')->first();
                 $user_id = Auth::user()->id;
@@ -298,7 +323,7 @@ class SocialChannelController extends Controller
 
                     $social_channel = SocialChannel::updateOrCreate(['channel_id' => $auth_user->id], [
                         'channel_id' => $auth_user->id,
-                        'name' => '@'.$auth_user->name.'( '.$auth_user->nickname.' )',
+                        'name' => $auth_user->nickname,
                         'type' => $type,
                         'category' => $category,
                         'access_token' => $auth_user->token,
@@ -311,7 +336,27 @@ class SocialChannelController extends Controller
                 break;
 
             case 'instagram':
-                echo "instagram";
+
+                $type = 'Account';
+                $category = 'Generic';
+
+                $social = Social::where('name', $provider)->pluck('id')->first();
+                $user_id = Auth::user()->id;
+
+                if (isset($auth_user)) {
+
+                    $social_channel = SocialChannel::updateOrCreate(['channel_id' => $auth_user->id], [
+                        'channel_id' => $auth_user->id,
+                        'name' => $auth_user->nickname,
+                        'type' => $type,
+                        'category' => $category,
+                        'access_token' => $auth_user->token,
+                        'access_token_secret' => '',
+                        'social_id' => $social,
+                        'user_id' => $user_id
+                    ]);
+                }
+
                 break;
         }
 
@@ -325,7 +370,7 @@ class SocialChannelController extends Controller
             case 'facebook':
 
                 $fb = new Facebook();
-                $graph = new GraphController($fb);
+                $graph = new FacebookController($fb);
 
                 $posts = $graph->getFacebookPagePosts($socialChannel->name);
 
@@ -348,6 +393,36 @@ class SocialChannelController extends Controller
                 break;
         }
 
+    }
+
+    public function getURLByProfile(SocialChannel $socialChannel, $provider)
+    {
+        switch ($provider) {
+
+            case 'facebook':
+
+                dd($socialChannel);
+
+                $url = 'https://www.facebook.com/profile.php?'.'';
+
+                return $url;
+
+                break;
+
+            case 'twitter':
+
+                $tw = new TwitterController();
+
+                $posts = $tw->getTweetFromChannel($socialChannel->id);
+
+                return $posts;
+
+                break;
+
+            case 'instagram':
+                echo "instagram";
+                break;
+        }
     }
 
 }
