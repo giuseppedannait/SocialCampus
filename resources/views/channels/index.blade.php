@@ -7,14 +7,18 @@
                 {{	session()->get('status') }}
             </p>
         @endif
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="btn-group">
+                    <a href="{{ route('channels.create') }}" class="btn btn-success btn-sm">Aggiungi Canale</a>
+                </div>
+            </div>
+        </div>
+
         <div class="panel panel-default">
             <div class="panel-heading">
-                <div>
-                    <a href="{{ route('channels.create') }}" class="btn btn-success btn-xs">Aggiungi Canale</a>
-                    <a href="{{ route('channels.add') }}" class="btn btn-success btn-xs">Aggiungi Post Multicanale</a>
-                </div>
-                <br>
-                <div>Canali Associati all'Utente :</div>
+                <h4>Canali Social</h4>
             </div>
             <div class="panel-body">
                 @if (count($channels))
@@ -27,7 +31,6 @@
                                 <th>Tipo</th>
                                 <th>Categoria</th>
                                 <th>Connesso il</th>
-                                <th>Ultimo Accesso</th>
                                 <th>Azioni</th>
                             </tr>
                             </thead>
@@ -36,20 +39,18 @@
                                 <tr>
 
                                     <td><a class="btn btn-social-icon btn-{{ @$channel->socials->name }}"><span class="fa fa-{{ @$channel->socials->name }}"></span></a></td>
-                                    <td><a href="http://www.{{ @$channel->socials->name }}.com/{{ $channel->name }}" target="_blank">{{ $channel->name }}</a></td>
+                                    <td><a href="{{ $channel->channel_URL }}" target="_blank">{{ $channel->name }}</a></td>
                                     <td>{{ $channel->type }}</td>
                                     <td>{{ $channel->category }}</td>
                                     <td>{{ $channel->created_at->format('m-d-Y') }}</td>
-                                    <td>{{ $channel->updated_at->format('m-d-Y') }}</td>
                                     <td>
                                         @if($channel->type != 'Profile')
-                                            <a href="{{ route('channels.show', $channel->id ) }}" class="btn btn-info btn-xs">Fetch Posts</a>
-                                            <a href="{{ route('channel.table', $channel->id ) }}" class="btn btn-success btn-xs">Table</a>
+                                            <a href="{{ route('channels.show', $channel->id ) }}" class="btn btn-info btn-xs">Vedi Canale</a>
                                             <form action="{{ route('channels.destroy', $channel->id) }}" method="POST" style="display:inline-block">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
                                                 <button class="btn btn-danger btn-xs">
-                                                    <span>DELETE</span>
+                                                    <span>X</span>
                                                 </button>
                                             </form>
                                         @endif

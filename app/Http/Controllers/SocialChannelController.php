@@ -185,9 +185,14 @@ class SocialChannelController extends Controller
      * @param  \App\SocialChannel  $socialChannel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SocialChannel $socialChannel)
+    public function destroy($id)
     {
-        //
+        $channel = SocialChannel::find($id);
+        $channel->delete();
+
+        // redirect
+        session()->flash('status', 'Canale correttamente eliminato.');
+        return redirect()->action('SocialChannelController@index');
     }
 
     public function table($socialChannel)
@@ -253,7 +258,9 @@ class SocialChannelController extends Controller
                 );*/
 
                 $type = 'Profile';
-                $category = ' Personal Account';
+                $category = 'Personal Account';
+                $url = 'https://www.facebook.com/profile.php?';
+
                 $social = Social::where('name', 'facebook')
                     ->pluck('id')
                     ->first();
@@ -273,7 +280,8 @@ class SocialChannelController extends Controller
                             'access_token' => $auth_user->token,
                             'access_token_secret' => '',
                             'social_id' => $social,
-                            'user_id' => $user_id
+                            'user_id' => $user_id,
+                            'channel_URL' => $url.$auth_user->id
                         ]
                     );
 
@@ -304,7 +312,8 @@ class SocialChannelController extends Controller
                         'access_token' => $details['access_token'],
                         'access_token_secret' => '',
                         'social_id' => $social,
-                        'user_id' => $user_id
+                        'user_id' => $user_id,
+                        'channel_URL' => $details['link']
                         ]
                     );
                 }
@@ -315,6 +324,7 @@ class SocialChannelController extends Controller
 
                 $type = 'Account';
                 $category = 'Generic';
+                $url = 'https://www.twitter.com/';
 
                 $social = Social::where('name', $provider)->pluck('id')->first();
                 $user_id = Auth::user()->id;
@@ -329,7 +339,8 @@ class SocialChannelController extends Controller
                         'access_token' => $auth_user->token,
                         'access_token_secret' => $auth_user->tokenSecret,
                         'social_id' => $social,
-                        'user_id' => $user_id
+                        'user_id' => $user_id,
+                        'channel_URL' => $url.$auth_user->nickname
                     ]);
                 }
 
@@ -339,6 +350,7 @@ class SocialChannelController extends Controller
 
                 $type = 'Account';
                 $category = 'Generic';
+                $url = 'https://www.instagram.com/';
 
                 $social = Social::where('name', $provider)->pluck('id')->first();
                 $user_id = Auth::user()->id;
@@ -353,7 +365,8 @@ class SocialChannelController extends Controller
                         'access_token' => $auth_user->token,
                         'access_token_secret' => '',
                         'social_id' => $social,
-                        'user_id' => $user_id
+                        'user_id' => $user_id,
+                        'channel_URL' => $url.$auth_user->nickname
                     ]);
                 }
 

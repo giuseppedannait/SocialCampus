@@ -71,7 +71,7 @@ class FacebookController extends Controller
 
         $fb->setDefaultAccessToken($this->getUserToken());
 
-        $response = $fb->get('/me/accounts');
+        $response = $fb->get('me/accounts?fields=access_token,category,name,id,perms,link');
 
         $pages = $response->getGraphEdge()->asArray();
 

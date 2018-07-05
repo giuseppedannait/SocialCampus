@@ -14,7 +14,7 @@ class SocialChannel extends Model
      */
 
     protected $fillable = [
-        'name', 'type', 'category', 'access_token', 'access_token_secret', 'social_id', 'user_id', 'channel_id'
+        'name', 'type', 'category', 'access_token', 'access_token_secret', 'social_id', 'user_id', 'channel_id', 'channel_URL'
     ];
 
     public $timestamps = true;

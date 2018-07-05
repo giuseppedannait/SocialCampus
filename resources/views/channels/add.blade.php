@@ -7,88 +7,78 @@
                 {{	session()->get('status') }}
             </p>
         @endif
-            <form action="{{ route('channel.post') }}" style="display:inline-block" method="POST" enctype="multipart/form-data">
-                @method('PUT')
-                @csrf
+                <div class="col-sm-12">
+                    <form action="{{ route('channel.post') }}" method="POST" enctype="multipart/form-data">
+                        @method('PUT')
+                        @csrf
+                        <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Componi il post</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <small id="messageHelp" class="form-text text-muted">Inserire il testo del messaggio</small>
+                                <textarea name="message" value="" rows="5" class="form-control">Cosa vuoi pubblicare ?</textarea>
+                            </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p>Componi il post :</p>
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="form-group">
-                                            <small id="messageHelp" class="form-text text-muted">Inserire il testo del messaggio</small>
-                                            <textarea name="message" value="" rows="5" class="form-control">Cosa vuoi pubblicare ?</textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <small id="urlHelp" class="form-text text-muted">Inserire l'eventuale URL da condividere</small>
-                                            <input type="text" value="" name="link">
-                                        </div>
-                                        <div class="form-group">
-                                            <small id="fileHelp" class="form-text text-muted">Scegliere l'eventuale immagine da caricare. L'immagine non deve superare la dimensione di 2MB.</small>
-                                            <input type="file" class="form-control-file" name="source" id="fileToUpload" aria-describedby="fileHelp">
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            <small id="urlHelp" class="form-text text-muted">Inserire l'eventuale URL da condividere</small>
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-addon">http://</span>
+                                    <input type="text" class="form-control" value="" name="link">
+                                </div>
+
+                            <div class="form-group">
+                                <small id="fileHelp" class="form-text text-muted">Scegliere l'eventuale immagine da caricare. L'immagine non deve superare la dimensione di 2MB.</small>
+                                <input type="file" class="form-control-file" name="source" id="fileToUpload" aria-describedby="fileHelp">
+                                <input id="input-b2" name="input-b2" type="file" class="file" data-show-preview="false">
+                            </div>
+
+                        @if (count($channels))
+                            <div class="">
+                                <small id="channelHelp" class="form-text text-muted text-danger">Prego, scegliere almeno un canale.</small>
+                                <table class="table table-bordered table-sm m-0">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10%">Seleziona</th>
+                                        <th style="width: 10%">Social</th>
+                                        <th>Nome Canale</th>
+                                        <th>Tipo</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($channels as $channel)
+                                        @if ($channel->type != 'Profile')
+                                            <tr>
+                                                <td>
+                                                    <label class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" style="display: none;" name="channels[]" value="{{ @$channel->id }}">
+                                                        <span class="custom-control-indicator"></span>
+                                                    </label>
+                                                </td>
+                                                <td><a class="btn btn-social-icon btn-{{ @$channel->socials->name }}"><span class="fa fa-{{ @$channel->socials->name }}"></span></a>                                   </td>
+                                                <td><a href="{{ $channel->channel_URL }}" target=_blank>{{ $channel->name }}</a></td>
+                                                <td>{{ $channel->type }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-success" value="Aggiungi Post">
+                                    <a href="{{ route('channels.index') }}" class="btn btn-danger"><< Indietro</a>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                {{--{{ $channels->links() }}--}}
+                            </div>
+                        @else
+                            <p class="alert alert-info">
+                                Nessun canale disponibile. Andare alla <a href="{{ route('channels.create') }}">Gestione Canali</a>, per aggiungere nuovi social.
+                            </p>
+                        @endif
                     </div>
                 </div>
-                <div class="panel-heading">
-                    Scegli il canale sul quale pubblicare :
-                    <small id="channelHelp" class="form-text text-muted">Prego, scegliere almeno un canale.</small>
+                    </form>
                 </div>
-                <div class="panel-body">
-                    @if (count($channels))
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>Select</th>
-                                    <th>Canale</th>
-                                    <th>Nome</th>
-                                    <th>Tipo</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($channels as $channel)
-                                    @if ($channel->type != 'Profile')
-                                        <tr>
-                                            <td>
-                                                <div class="form-group">
-                                                    <div class="material-switch pull-right">
-                                                        <input type="checkbox" name="channels[]" value="{{  @$channel->id }}"/>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td><a class="btn btn-social-icon btn-{{ @$channel->socials->name }}"><span class="fa fa-{{ @$channel->socials->name }}"></span></a></td>
-                                            <td>{{ $channel->name }}</td>
-                                            <td>{{ $channel->type }}</td>
-
-                                        </tr>
-                                    @endif
-                                @endforeach
-                                </tbody>
-                            </table>
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-success" value="Aggiungi Post">
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            {{--{{ $channels->links() }}--}}
-                        </div>
-                    @else
-                        <p class="alert alert-info">
-                            Nessun canale attivo!
-                        </p>
-                    @endif
-                </div>
-        </div>
-     </form>
     </div>
 @endsection

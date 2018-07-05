@@ -10,99 +10,115 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- Bootstrap CDN -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> -->
 
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Local -->
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
-     <!-- Styles -->
+     <!-- Asset Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-    {{--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">--}}
+    <!-- Asset Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Social -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css">
 
+    <!-- jQuery -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+    <!--<script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+<div id="app">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </button>
+                <a class="navbar-brand" href="/">SocialCampus</a>
+            </div>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+            <ul id="navbar" class="collapse navbar-collapse">                <!-- Left Side Of Navbar -->
+                <ul class="nav navbar-nav">
 
-                        @guest
+                    <li><a href="{{ action('HomeController@index') }}">Dashboard</a></li>
 
-                        @else
+                    @guest
 
-                            @if (isset(Auth::user()->roles->first()->name))
+                    @else
 
-                                @if (Auth::user()->roles->first()->name === 'SOCIAL_USER')
-                                    <li><a class="nav-link" href="{{ url('/channels') }}">Canali Social</a></li>
-                                    <li><a class="nav-link" href="{{ url('/channel/add') }}">Post</a></li>
-                                @elseif (Auth::user()->roles->first()->name === 'SOCIAL_ADMIN')
-                                    <li><a class="nav-link" href="{{ url('/users') }}">Utenti</a></li>
-                                    <li><a class="nav-link" href="{{ url('/channels') }}">Canali Social</a></li>
-                                    <li><a class="nav-link" href="{{ url('/channel/add') }}">Post</a></li>
-                                @elseif (Auth::user()->roles->first()->name === 'SOCIAL_SUPER_ADMIN')
-                                    <li><a class="nav-link" href="{{ url('/users') }}">Utenti</a></li>
-                                    <li><a class="nav-link" href="{{ url('/channels') }}">Canali Social</a></li>
-                                    <li><a class="nav-link" href="{{ url('/socials') }}">Provider Social</a></li>
-                                    <li><a class="nav-link" href="{{ url('/channel/add') }}">Post</a></li>
-                                @endif
+                        @if (isset(Auth::user()->roles->first()->name))
 
+                            @if (Auth::user()->roles->first()->name === 'SOCIAL_USER')
+                                <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
+                                <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
+                            @elseif (Auth::user()->roles->first()->name === 'SOCIAL_ADMIN')
+                                <li><a class="n" href="{{ url('/users') }}">Utenti</a></li>
+                                <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
+                                <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
+                            @elseif (Auth::user()->roles->first()->name === 'SOCIAL_SUPER_ADMIN')
+                                <li><a class="" href="{{ url('/users') }}">Utenti</a></li>
+                                <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
+                                <li><a class="" href="{{ url('/socials') }}">Gestione Provider</a></li>
+                                <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
                             @endif
 
-                        @endguest
+                        @endif
 
-                    </ul>
+                    @endguest
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} ( {{ Auth::user()->roles->first()->name }} ) <span class="caret"></span>
-                                </a>
+                </ul>
 
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <!-- Right Side Of Navbar -->
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Authentication Links -->
+                    @guest
+                        <li><a class="" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                        <li><a class="" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                    @else
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ciao, {{ Auth::user()->name }} ( {{ Auth::user()->roles->first()->name }} ) <span class="caret"></span></a>
+
+                            <ul class="dropdown-menu">
+                                <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                   onclick="event.preventDefault();
+                                                 document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
                                     </a>
+                                </li>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </ul>
+                        </li>
+                    @endguest
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
+@yield('content')
+
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+
 </body>
 </html>
