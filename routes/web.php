@@ -32,7 +32,9 @@ Route::resource('socials', 'SocialController');
 // Social Channel
 Route::resource('channels', 'SocialChannelController');
 
-Route::get('/channel/table/{id}', 'SocialChannelController@table')->name('channel.table');
+Route::get('/channel/posts/{id}', 'SocialChannelController@posts')->name('channels.posts');
+
+Route::get('/channel/posts/{id}/comments', 'SocialChannelController@comments')->name('channels.posts.comments');
 
 Route::get('/channel/add', 'SocialChannelController@add')->name('channels.add');
 

@@ -113,7 +113,8 @@ body {
 
 .fb-stream-icon{ /* MOD */
     float:left;
-    margin-right:5px;}
+    margin-right:10px;
+    width:30px;}
 
 .fb-stream-date{ /* MOD */
     font-size:11px;

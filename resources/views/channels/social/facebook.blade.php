@@ -2,9 +2,13 @@
     @php
         $icon = $posts['picture']['url']
     @endphp
+@else
+    @php
+        $icon = "";
+    @endphp
 @endif
-<div class="panel panel-default">
 
+<div class="panel panel-default">
     <div class="panel-body">
         <div class="fb-stream">
             <div class="fb-stream-head">
@@ -18,7 +22,7 @@
                         <div><a class="fb-stream-name" href="http://www.facebook.com/{{ $posts['id'] }}" title="{{ $posts['id'] }}" target="_blank">ID: {{ $posts['id'] }}</a></div>
                         <div><a class="fb-stream-name" href="http://www.facebook.com/{{ $posts['id'] }}" title="{{ $posts['id'] }}" target="_blank">Fans totali: {{ $posts['fan_count'] }}</a></div>
                     </div>
-                </div>
+                ©
                 <div style="clear:both;"></div>
             </div>
 

@@ -19,6 +19,8 @@ use Facebook\Facebook;
 
 use Twitter;
 
+use App\Http\Controllers\InstagramController;
+
 class SocialChannelController extends Controller
 {
     /**
@@ -195,7 +197,7 @@ class SocialChannelController extends Controller
         return redirect()->action('SocialChannelController@index');
     }
 
-    public function table($socialChannel)
+    public function posts($socialChannel)
     {
         $channel = SocialChannel::where('id', $socialChannel)->with('socials')->first();
 
@@ -203,7 +205,7 @@ class SocialChannelController extends Controller
         $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
 
         $posts = $this->getPosts($channel, $provider);
-        return view('channels.table', ['channels' => $channel, 'posts' => $posts, 'provider' => $provider]);
+        return view('channels.posts', ['channels' => $channel, 'posts' => $posts, 'provider' => $provider]);
     }
 
     /**
@@ -397,12 +399,64 @@ class SocialChannelController extends Controller
 
                 $posts = $tw->getTweetFromChannel($socialChannel->id);
 
+                /*foreach($posts as $post){
+                    $comments[] = $tw->getTwitterCommentsOnTweet($socialChannel->id, $post['id']);
+
+                    /*post->comments_data = $comments;
+                    $posts_comment[] = $post;
+
+                }
+                */
+
                 return $posts;
 
                 break;
 
             case 'instagram':
-                echo "instagram";
+
+                $ig = new InstagramController();
+
+                $posts = $ig->getInstagramPosts($socialChannel->id);
+
+                foreach($posts as $post){
+                    $comments = $ig->getInstagramCommentOnPosts($socialChannel->id, $post->id);
+                    $post->comments_data = $comments;
+                    $posts_comment[] = $post;
+                }
+
+                return($posts_comment);
+
+                break;
+        }
+
+    }
+
+    public function getComments(SocialChannel $socialChannel, $provider, $id_post){
+
+        switch ($provider) {
+
+            case 'facebook':
+
+                break;
+
+            case 'twitter':
+
+                $tw = new TwitterController();
+
+                $comments = $tw->getTwitterCommentsOnTweet($socialChannel->id, $id_post);
+
+                return $comments;
+
+                break;
+
+            case 'instagram':
+
+                $ig = new InstagramController();
+
+                $comments = $ig->getInstagramCommentOnPosts($socialChannel->id, $id_post );
+
+                return($comments);
+
                 break;
         }
 

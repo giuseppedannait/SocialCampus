@@ -14,7 +14,7 @@
 
                         <a href="{{ route('channels.index') }}" class="btn btn-danger btn-sm"><< Indietro</a>
                         <a href="{{ route('channels.show', $channels->id) }}" class="btn btn-success btn-sm">Aggiorna i dati</a>
-                        <a href="{{ route('facebook.posts.show', ['name' => $channels->name]) }}" class="btn btn-info btn-sm">Visualizza JSON</a>
+                        <a href="{{ route($provider.'.posts.show', ['name' => $channels->name]) }}" class="btn btn-info btn-sm">Visualizza JSON</a>
 
                     </div>
                 </div>
@@ -22,34 +22,29 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2><a class="btn btn-social-icon btn-{{ $provider }}"><span class="fa fa-{{ $provider }}"></span></a> {{ ucfirst($provider) }} Channel Feed</h2>
+                    <h2><a class="btn btn-social-icon btn-{{ $provider }}"><span class="fa fa-{{ $provider }}"></span></a> Tabella dei Post per {{ ucfirst($provider) }} </h2>
                 </div>
             </div>
 
-        @if(isset($provider))
-            @switch($provider)
+    @if(isset($provider))
+        @switch($provider)
 
-                @case('facebook')
+            @case('facebook')
+                @include('channels.posts.facebook')
+            @break
 
-                    @include('channels.social.facebook')
+            @case('twitter')
+                @include('channels.posts.twitter')
+            @break
 
-                @break
+            @case('instagram')
+                @include('channels.posts.instagram')
+            @break
 
-                @case('twitter')
-
-                    @include('channels.social.twitter')
-
-                @break
-
-                @case('instagram')
-                    @include('channels.social.instagram')
-                @break
-
-            @endswitch
-        @endif
+        @endswitch
+    @endif
 
     </div>
+
 @endsection
-
-
 

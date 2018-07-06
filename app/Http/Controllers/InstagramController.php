@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 
 use GuzzleHttp\Client;
+
+use App\SocialChannel;
 
 class InstagramController extends Controller
 {
@@ -18,15 +21,17 @@ class InstagramController extends Controller
         ]);
     }
 
-    public function setAccessToken($token){
+    public function setAccessToken($token)
+    {
         $this->access_token = $token;
     }
 
-    public function getUser(){
-        if($this->access_token){
+    public function getUser()
+    {
+        if ($this->access_token) {
             $response = $this->client->request('GET', 'users/self/', [
                 'query' => [
-                    'access_token' =>  $this->access_token
+                    'access_token' => $this->access_token
                 ]
             ]);
             return json_decode($response->getBody()->getContents())->data;
@@ -34,27 +39,69 @@ class InstagramController extends Controller
         return [];
     }
 
-    public function getPosts(){
-        if($this->access_token){
-            $response = $this->client->request('GET', 'users/self/media/recent/', [
-                'query' => [
-                    'access_token' =>  $this->access_token
-                ]
-            ]);
-            return json_decode($response->getBody()->getContents())->data;
+    /**
+     * @param $channel
+     * @return mixed
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getInstagramPosts($channel)
+    {
+        $page = new SocialChannel();
+
+        $page_access_token = $page::where('id', $channel)
+            ->pluck('access_token')
+            ->first();
+
+        $ig_response = "";
+
+        try {
+
+            $ig_response = $this->client->request('GET', 'users/self/media/recent/',
+                [
+                    'query' => [
+                        'access_token' => $page_access_token
+                    ]
+                ]);
+
+        } catch (GuzzleException $e) {
+            dd($e); // handle exception
         }
-        return [];
+        return json_decode($ig_response->getBody()->getContents())->data;
     }
 
-    public function getTagPosts($tags){
-        if($this->access_token){
-            $response = $this->client->request('GET', 'tags/'.$tags.'/media/recent/', [
-                'query' => [
-                    'access_token' =>  $this->access_token
-                ]
-            ]);
-            return json_decode($response->getBody()->getContents())->data;
+    public function getInstagramCommentOnPosts($channel, $id_post)
+    {
+        $page = new SocialChannel();
+
+        $page_access_token = $page::where('id', $channel)
+            ->pluck('access_token')
+            ->first();
+
+        $ig_response = "";
+
+        try {
+
+            $ig_response = $this->client->request('GET', 'media/' . $id_post . '/comments',
+                [
+                    'query' => [
+                        'access_token' => $page_access_token
+                    ]
+                ]);
+
+        } catch (GuzzleException $e) {
+            dd($e);
         }
-        return [];
+
+        return json_decode($ig_response->getBody()->getContents())->data;
+    }
+
+    public function getMediaId($URL) {
+
+        $api = file_get_contents("http://api.instagram.com/oembed?callback=&url=" . $URL);
+        $media_id = json_decode($api,true)['media_id'];
+
+        return $media_id;
+
     }
 }
+

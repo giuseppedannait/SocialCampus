@@ -45,7 +45,8 @@
                                     <td>{{ $channel->created_at->format('m-d-Y') }}</td>
                                     <td>
                                         @if($channel->type != 'Profile')
-                                            <a href="{{ route('channels.show', $channel->id ) }}" class="btn btn-info btn-xs">Vedi Canale</a>
+                                            <a href="{{ route('channels.show', $channel->id ) }}" class="btn btn-success btn-xs">Vedi Canale</a>
+                                            <a href="{{ route('channels.posts', $channel->id ) }}" class="btn btn-info btn-xs">Vedi Posts</a>
                                             <form action="{{ route('channels.destroy', $channel->id) }}" method="POST" style="display:inline-block">
                                                 {{ csrf_field() }}
                                                 {{ method_field('DELETE') }}
