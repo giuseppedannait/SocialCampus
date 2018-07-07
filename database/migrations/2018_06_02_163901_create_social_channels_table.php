@@ -19,7 +19,7 @@ class CreateSocialChannelsTable extends Migration
                 $table->foreign('social_id')->on('socials')->references('id');
             $table->string('name', 128);
             $table->text('description');
-            $table->bigInteger('user_id')->unsigned();
+            $table->Integer('user_id')->unsigned();
                 $table->foreign('user_id')->on('users')->references('id');
             $table->timestamps();
         });
