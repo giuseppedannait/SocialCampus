@@ -17,9 +17,13 @@ class User extends Authenticatable
      *
      * @var array
      */
+<<<<<<< HEAD
+    protected $fillable = ['email'];
+=======
     protected $fillable = [
         'name', 'email', 'password', 'facebook_access_token', 'facebook_user_id'
     ];
+>>>>>>> Facebook
 
     /*protected static $graph_node_field_aliases = [
         'id' => 'facebook_user_id',
@@ -34,6 +38,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+<<<<<<< HEAD
+
+    public function socialProfile()
+    {
+        return $this->hasOne(SocialLoginProfile::class);
+    }
+}
+=======
     
     public function roles()
     {
@@ -80,3 +92,4 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 }
+>>>>>>> Reset
