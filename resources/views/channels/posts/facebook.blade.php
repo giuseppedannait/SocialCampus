@@ -7,7 +7,7 @@
 <div class="col-xs-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <img class="fb-stream-pic" src="{{ $icon }}" >  <a href="http://www.facebook.com/{{ $posts['id'] }}" title="{{ $posts['id'] }}" target="_blank"> {{ $channels->name }}</a>
+            <img class="fb-stream-pic" src="{{ $icon }}" > <a href="http://www.facebook.com/{{ $posts['id'] }}" title="{{ $posts['id'] }}" target="_blank"> {{ $channels->name }}</a>
         </div>
 
         <div class="panel-body">
@@ -18,20 +18,21 @@
     </div>
     @if (count($posts['posts']))
         <div class="table-responsive">
-            <table class="table table-bordered">
+            <table id="posts" class="table table-bordered">
                 <thead>
                 <tr>
                     <th>Tipo</th>
                     <th>Testo</th>
                     <th>Creato il</th>
                     <th>Media</th>
-                    <th><img width="50px" src="/public/icons/Like-500px.gif"></th>
-                    <th><img width="50px" src="/public/icons/Love-500px.gif"></th>
-                    <th><img width="50px" src="/public/icons/Haha-500px.gif"></th>
-                    <th><img width="50px" src="/public/icons/Sad-500px.gif"></th>
-                    <th><img width="50px" src="/public/icons/Wow-500px.gif"></th>
-                    <th><img width="50px" src="/public/icons/Angry-500px.gif"></th>
-                    <th>Azioni</th>
+                    <th width="25px"><img width="25px" src="/public/icons/Like-500px.gif"></th>
+                    <th width="25px"><img width="25px" src="/public/icons/Love-500px.gif"></th>
+                    <th width="25px"><img width="25px" src="/public/icons/Haha-500px.gif"></th>
+                    <th width="25px"><img width="25x" src="/public/icons/Sad-500px.gif"></th>
+                    <th width="25px"><img width="25px" src="/public/icons/Wow-500px.gif"></th>
+                    <th width="25px"><img width="25px" src="/public/icons/Angry-500px.gif"></th>
+                    <th width="25px"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></th>
+                    <th width="15%">Azioni</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -56,6 +57,8 @@
 
                                     @endswitch
                                 @endforeach
+                            @else
+                                SIMPLE
                             @endif
                         </td>
                         <td>
@@ -73,18 +76,18 @@
                                 @foreach($post['attachments'] as $attachment)
                                     @switch($attachment['type'])
                                         @case('share')
-                                        @if (isset($attachment['media']))
-                                            @foreach($attachment['media'] as $media)
-                                                <img class="fb-stream-pic" src="{{ $media['src'] }}">
-                                            @endforeach
-                                        @endif
+                                            @if (isset($attachment['media']))
+                                                @foreach($attachment['media'] as $media)
+                                                    <img class="fb-stream-pic" src="{{ $media['src'] }}">
+                                                @endforeach
+                                            @endif
                                         @break
 
                                         @case('photo')
-                                        @if (isset($attachment['media']))
-                                            @foreach($attachment['media'] as $media)
-                                                <img class="fb-stream-pic" src="{{ $media['src'] }}">                                                                            @endforeach
-                                        @endif
+                                            @if (isset($attachment['media']))
+                                                @foreach($attachment['media'] as $media)
+                                                    <img class="fb-stream-pic" src="{{ $media['src'] }}">                                                                            @endforeach
+                                            @endif
                                         @break
 
                                         @case('video')
@@ -94,9 +97,7 @@
                                     @endswitch
                                 @endforeach
                             @else
-                                @else
-                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                @endif
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                             @endif
                         </td>
 
@@ -152,7 +153,7 @@
                                         @break
 
                                         @case('ANGRY')
-                                            @php()
+                                            @php
                                                 $ANGRY++;
                                             @endphp
                                         @break
@@ -173,20 +174,40 @@
                             <td align="center">{{ $SAD }}</td>
                             <td align="center">{{ $ANGRY }}</td>
                             <td>
-                                <button class="btn btn-info btn-xs">
-                                    <span>Commenti</span>
-                                </button>
-                                <form action="" method="POST" style="display:inline-block">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
-                                    <button class="btn btn-danger btn-xs" alt="Elimina il post">
-                                        <span>X</span>
-                                    </button>
-                                </form>
+                                @php
+                                    $counter=0;
+                                @endphp
+                                @if (isset($post['comments']))
+                                    @foreach($post['comments'] as $comment)
+                                        @php
+                                            $counter++;
+                                        @endphp
+                                    @endforeach
+                                @endif
+                                {{ $counter }}
+                            </td>
+                            <td>
+                                <a href="{{ route('channels.posts.comments', ['id' => $channels->id, 'post' => $post['id']]) }}" class="btn btn-info btn-xs">Commenti</a>
+                                <a href="{{ route('channels.posts.delete', ['id' => $channels->id, 'post' => $post['id']]) }}" class="btn btn-danger btn-xs">X</a>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
+                <tfoot>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Testo</th>
+                    <th>Creato il</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </tfoot>
             </table>
         </div>
     @endif

@@ -22,8 +22,7 @@
             </div>
             <div class="panel-body">
                 @if (count($channels))
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
+                        <table id="channels" class="table table-bordered display">
                             <thead>
                             <tr>
                                 <th>Canale</th>
@@ -60,7 +59,7 @@
                             @endforeach
                             </tbody>
                         </table>
-                    </div>
+
                     <div class="text-center">
                         {{--{{ $channels->links() }}--}}
                     </div>
@@ -72,4 +71,21 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+
+    <!-- DataTable -->
+    <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#channels').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Italian.json"
+                }
+            });
+        } );
+    </script>
+
 @endsection

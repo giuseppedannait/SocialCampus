@@ -17,7 +17,7 @@
 
             @if (count($posts))
                 <div class="table-responsive">
-                    <table id="posts" class="table table-bordered">
+                    <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th>Tipo</th>
@@ -98,8 +98,13 @@
                                 </td>
                                 <td>ND</td>
                                 <td>
-                                    <a href="{{ route('channels.posts.delete', ['id' => $channels->id, 'post' => $post['id']]) }}" class="btn btn-danger btn-xs">X</a>
-
+                                    <form action="" method="POST" style="display:inline-block">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                        <button class="btn btn-danger btn-xs">
+                                            <span>X</span>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach

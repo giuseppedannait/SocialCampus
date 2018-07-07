@@ -162,4 +162,40 @@ class TwitterController extends Controller
         return $tw_response;
 
     }
+
+    public function deleteTweetFromChannel($channel, $post_id)
+    {
+        $page = new SocialChannel();
+
+        $page_access_token = $page::where('id', $channel)
+            ->pluck('access_token')
+            ->first();
+
+        $page_access_token_secret = $page::where('id', $channel)
+            ->pluck('access_token_secret')
+            ->first();
+
+        $page_name = $page::where('id', $channel)
+            ->pluck('name')
+            ->first();
+
+        Twitter::reconfig([
+            'consumer_key' => env('TWITTER_CONSUMER_KEY'),
+            'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),
+            'token' => $page_access_token,
+            'secret' => $page_access_token_secret
+        ]);
+
+        $tw_response="";
+
+        try {
+
+            $tw_response = Twitter::destroyTweet($post_id);
+            
+        } catch (Exception $e) {
+            dd($e); // handle exception
+        }
+
+        return $tw_response;
+    }
 }

@@ -103,5 +103,11 @@ class InstagramController extends Controller
         return $media_id;
 
     }
+
+    public function publishToChannel($channel, $post){
+
+       //
+
+    }
 }
 

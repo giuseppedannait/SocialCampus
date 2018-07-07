@@ -16,8 +16,8 @@
                         </div>
 
                         <div style="display:table;">
-                            <div><a class="fb-stream-name" href="http://www.instagram.com/{{ $posts['0']->user->id }}" title="{{ $posts['0']->user->id }}" target="_blank">{{ $posts['0']->user->full_name }}</a></div>
-                            <div><a class="fb-stream-name" href="http://www.instagram.com/{{ $posts['0']->user->id }}" title="{{ $posts['0']->user->id }}" target="_blank">ID: {{ $posts['0']->user->id }}</a></div>
+                            <div>Canale : <a class="fb-stream-name" href="http://www.instagram.com/{{ $posts['0']->user->id }}" title="{{ $posts['0']->user->id }}" target="_blank"> {{ $posts['0']->user->full_name }}</a></div>
+                            <div>ID : <a class="fb-stream-name" href="http://www.instagram.com/{{ $posts['0']->user->id }}" title="{{ $posts['0']->user->id }}" target="_blank"> {{ $posts['0']->user->id }}</a></div>
                         </div>
                     </div>
                     <div style="clear:both;"></div>
@@ -52,7 +52,7 @@
 
                             @if (isset($post->comments_data))
                                 @php
-                                    $counter=1;
+                                    $counter=0;
                                 @endphp
                                 @foreach($post->comments_data as $comment)
                                     @if (isset($comment->text))

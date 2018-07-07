@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,36 +8,28 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Social Campus') }}</title>
 
-    <!-- Bootstrap CDN -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"> -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> -->
-
-    <!-- Bootstrap Local -->
+    <!-- Bootstrap Local CSS -->
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
-     <!-- Asset Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    <!-- Asset Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Social -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.0.0/bootstrap-social.min.css">
 
-    <!-- jQuery -->
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
-    <!--<script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
+    <!-- Datatables CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('js/DataTables/datatables.min.css') }}">
 
+    <!-- Asset Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <!-- Asset Scripts -->
 </head>
 <body>
-<div id="app">
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -113,12 +105,13 @@
 
 @yield('content')
 
-</div>
+<!-- jQuery -->
+<script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+<!-- Bootstrap JS -->
+<script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+
+@yield('scripts')
 
 </body>
 </html>

@@ -34,11 +34,13 @@ Route::resource('channels', 'SocialChannelController');
 
 Route::get('/channel/posts/{id}', 'SocialChannelController@posts')->name('channels.posts');
 
-Route::get('/channel/posts/{id}/comments', 'SocialChannelController@comments')->name('channels.posts.comments');
+Route::get('/channel/posts/{id}/{post}/comments', 'SocialChannelController@comments')->name('channels.posts.comments');
 
 Route::get('/channel/add', 'SocialChannelController@add')->name('channels.add');
 
-Route::put('/channel/post', 'SocialChannelController@publish')->name('channel.post');;
+Route::put('/channel/post', 'SocialChannelController@publish')->name('channel.post');
+
+Route::get('/channel/{id}/posts/delete/{post}', 'SocialChannelController@delete')->name('channels.posts.delete');
 
 // Socialite Route
 

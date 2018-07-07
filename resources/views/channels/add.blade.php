@@ -30,12 +30,11 @@
                             <div class="form-group">
                                 <small id="fileHelp" class="form-text text-muted">Scegliere l'eventuale immagine da caricare. L'immagine non deve superare la dimensione di 2MB.</small>
                                 <input type="file" class="form-control-file" name="source" id="fileToUpload" aria-describedby="fileHelp">
-                                <input id="input-b2" name="input-b2" type="file" class="file" data-show-preview="false">
                             </div>
 
                         @if (count($channels))
                             <div class="">
-                                <small id="channelHelp" class="form-text text-muted text-danger">Prego, scegliere almeno un canale.</small>
+                                <small id="channelHelp" class="form-text text-muted text-danger">Prego, scegliere almeno un canale. NB. L'upload via instagram non è disponibile con l'attuale versione del framework.</small>
                                 <table class="table table-bordered table-sm m-0">
                                     <thead>
                                     <tr>
@@ -48,17 +47,19 @@
                                     <tbody>
                                     @foreach($channels as $channel)
                                         @if ($channel->type != 'Profile')
-                                            <tr>
-                                                <td>
-                                                    <label class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" style="display: none;" name="channels[]" value="{{ @$channel->id }}">
-                                                        <span class="custom-control-indicator"></span>
-                                                    </label>
-                                                </td>
-                                                <td><a class="btn btn-social-icon btn-{{ @$channel->socials->name }}"><span class="fa fa-{{ @$channel->socials->name }}"></span></a>                                   </td>
-                                                <td><a href="{{ $channel->channel_URL }}" target=_blank>{{ $channel->name }}</a></td>
-                                                <td>{{ $channel->type }}</td>
-                                            </tr>
+                                            @if (@$channel->socials->name != 'instagram')
+                                                <tr>
+                                                    <td>
+                                                        <label class="custom-control custom-checkbox">
+                                                            <input type="checkbox" class="custom-control-input" style="display: none;" name="channels[]" value="{{ @$channel->id }}">
+                                                            <span class="custom-control-indicator"></span>
+                                                        </label>
+                                                    </td>
+                                                    <td><a class="btn btn-social-icon btn-{{ @$channel->socials->name }}"><span class="fa fa-{{ @$channel->socials->name }}"></span></a>                                   </td>
+                                                    <td><a href="{{ $channel->channel_URL }}" target=_blank>{{ $channel->name }}</a></td>
+                                                    <td>{{ $channel->type }}</td>
+                                                </tr>
+                                            @endif
                                         @endif
                                     @endforeach
                                     </tbody>

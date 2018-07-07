@@ -39,12 +39,12 @@ class SocialChannelController extends Controller
 
     public function index()
     {
-        if(Auth::check()) {
+        if (Auth::check()) {
             $user = Auth::user()->id;
             $role = Auth::user()->role;
         }
 
-        $channels = SocialChannel::with('socials')->latest()->where('user_id',$user)->orderBy('name')->paginate();
+        $channels = SocialChannel::with('socials')->latest()->where('user_id', $user)->orderBy('name')->paginate();
         return view('channels.index', compact('channels', $channels));
     }
 
@@ -61,7 +61,7 @@ class SocialChannelController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -72,7 +72,7 @@ class SocialChannelController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SocialChannel  $socialChannel
+     * @param  \App\SocialChannel $socialChannel
      * @return \Illuminate\Http\Response
      */
     public function show($socialChannel)
@@ -90,7 +90,7 @@ class SocialChannelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SocialChannel  $socialChannel
+     * @param  \App\SocialChannel $socialChannel
      * @return \Illuminate\Http\Response
      */
     public function edit(SocialChannel $socialChannel)
@@ -101,8 +101,8 @@ class SocialChannelController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SocialChannel  $socialChannel
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\SocialChannel $socialChannel
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, SocialChannel $socialChannel)
@@ -112,36 +112,38 @@ class SocialChannelController extends Controller
 
     public function add()
     {
-        if(Auth::check()) {
+        if (Auth::check()) {
             $user = Auth::user()->id;
             $role = Auth::user()->role;
         }
 
-        $channels = SocialChannel::with('socials')->latest()->where('user_id',$user)->orderBy('name')->paginate();
+        $channels = SocialChannel::with('socials')->latest()->where('user_id', $user)->orderBy('name')->paginate();
         return view('channels.add', compact('channels', $channels));
     }
 
     public function publish(Request $request)
     {
-        $post=[];
-        $post['type']='simple';
+        $post = [];
+        $post['type'] = 'simple';
 
         $post['message'] = $request->input('message');
 
         if ($request->source) {
 
-            $fileName = "SocialCampus".time().'.'.request()->source->getClientOriginalExtension();
+            $fileName = "SocialCampus" . time() . '.' . request()->source->getClientOriginalExtension();
 
-            $post['source'] = storage_path('app/').$request->source->storeAs('images',$fileName);
+            $post['source'] = storage_path('app/') . $request->source->storeAs('images', $fileName);
             $post['type'] = 'image';
         }
 
-        if ($request->input('link')) { $post['link'] = $request->input('link'); $post['type'] = 'link';}
+        if ($request->input('link')) {
+            $post['link'] = $request->input('link');
+            $post['type'] = 'link';
+        }
 
         $channels = $request->input('channels');
 
-        foreach($channels as $channel)
-        {
+        foreach ($channels as $channel) {
             $provider_id = SocialChannel::with('socials')->where('id', $channel)->pluck('social_id')->first();
             $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
 
@@ -166,15 +168,16 @@ class SocialChannelController extends Controller
                     break;
 
                 case 'instagram':
-                    echo "i equals 2";
+
+                    $post[$channel] = "";
+
                     break;
             }
         }
 
         if ($post) {
             session()->flash('status', ' Post inserito correttamente');
-        }
-        else{
+        } else {
             session()->flash('status', ' Post non inserito. Controllare eventuali errori segnalati.');
         }
 
@@ -184,7 +187,7 @@ class SocialChannelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SocialChannel  $socialChannel
+     * @param  \App\SocialChannel $socialChannel
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -206,6 +209,30 @@ class SocialChannelController extends Controller
 
         $posts = $this->getPosts($channel, $provider);
         return view('channels.posts', ['channels' => $channel, 'posts' => $posts, 'provider' => $provider]);
+    }
+
+    public function comments($socialChannel, $id_post)
+    {
+        $channel = SocialChannel::where('id', $socialChannel)->with('socials')->first();
+
+        $provider_id = SocialChannel::with('socials')->where('id', $socialChannel)->pluck('social_id')->first();
+        $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
+
+        $posts = $this->getPosts($channel, $provider);
+        return view('channels.comments', ['channels' => $channel, 'posts' => $posts, 'provider' => $provider, 'post_id' => $id_post]);
+    }
+
+    public function delete($socialChannel, $id_post)
+    {
+        $channel = SocialChannel::where('id', $socialChannel)->with('socials')->first();
+
+        $provider_id = SocialChannel::with('socials')->where('id', $socialChannel)->pluck('social_id')->first();
+        $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
+
+        $posts = $this->deletePost($channel, $provider, $id_post);
+
+        session()->flash('status', 'Post correttamente eliminato.');
+        return redirect()->action('SocialChannelController@posts', $channel->id );
     }
 
     /**
@@ -490,6 +517,39 @@ class SocialChannelController extends Controller
                 echo "instagram";
                 break;
         }
+    }
+
+    public function deletePost(SocialChannel $socialChannel, $provider, $id_post){
+
+        switch ($provider) {
+
+            case 'facebook':
+
+                $fb = new Facebook();
+                $graph = new FacebookController($fb);
+
+                $posts = $graph->destroyPost($socialChannel->id, $id_post);
+
+                return $posts;
+
+                break;
+
+            case 'twitter':
+
+                $tw = new TwitterController();
+
+                $posts = $tw->deleteTweetFromChannel($socialChannel->id, $id_post);
+
+                return $posts;
+
+                break;
+
+
+            case 'instagram':
+
+                break;
+        }
+
     }
 
 }

@@ -261,4 +261,35 @@ class FacebookController extends Controller
 
     }
 
+    public function destroyPost($channel, $id){
+
+        $page = new SocialChannel();
+
+        $fb = new Facebook();
+
+        $fb->setDefaultAccessToken($this->getUserToken());
+
+        $page_access_token = $page::where('id', $channel)
+            ->pluck('access_token')
+            ->first();
+
+        $fb_response="";
+
+        try {
+
+            $fb_response = $fb->delete('/'.$id,
+                array (),
+                $page_access_token
+            );
+
+            $delete = $fb_response->getGraphNode();
+
+            return $delete;
+
+        } catch (FacebookSDKException $e) {
+            dd($e); // handle exception
+        }
+
+    }
+
 }
