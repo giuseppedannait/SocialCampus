@@ -9,8 +9,8 @@
         @endif
         <div class="panel panel-default">
             <div class="panel-heading">
-                User Listing
-                <a href="{{ route('users.create') }}" class="btn btn-success btn-xs">Add User</a>
+                <div><a href="{{ route('users.create') }}" class="btn btn-success btn-xs">Add User</a></div>
+                Utenti associati al tuo account :
             </div>
             <div class="panel-body">
                 @if (count($users))
@@ -28,6 +28,7 @@
                             </thead>
                             <tbody>
                             @foreach($users as $user)
+                                @if (!($user->name == 'Paperino'))
                                 <tr>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
@@ -46,6 +47,7 @@
                                         </form>
                                     </td>
                                 </tr>
+                                @endif
                             @endforeach
                             </tbody>
                         </table>

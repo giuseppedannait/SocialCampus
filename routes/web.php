@@ -11,40 +11,6 @@
 |
 */
 
-<<<<<<< HEAD
-/*Route::get('/', function () {
-    return view('welcome');
-});*/
-
-Route::get('/', function () {
-    return view('home');
-});
-
-Route::get('login', 'LoginController@showLoginPage');
-
-Route::get('dashboard', 'LoginController@showDashBoard')
-    ->middleware(['auth']);
-
-// Route that check the provider and then perform the Login
-Route::get('logout', 'LoginController@logout');
-
-//Route::get('login/{provider}', 'LoginController@auth')
-//    ->where(['provider' => 'facebook|google|twitter']);
-//
-//Route::get('login/{provider}/callback', 'LoginController@login')
-//    ->where(['provider' => 'facebook|google|twitter']);
-
-// Generate a login URL
-Route::get('/facebook/login', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
-{
-    // Send an array of permissions to request
-    $login_url = $fb->getLoginUrl(['email']);
-
-    // Obviously you'd do this in blade :)
-    echo '<a href="' . $login_url . '">Login with Facebook</a>';
-});
-
-=======
 Route::get('/', function () {
     return view('home');
 });
@@ -63,16 +29,26 @@ Route::resource('users', 'UserController');
 // Social Controller
 Route::resource('socials', 'SocialController');
 
-// Social Channell
+// Social Channel
 Route::resource('channels', 'SocialChannelController');
+
+Route::get('/channel/posts/{id}', 'SocialChannelController@posts')->name('channels.posts');
+
+Route::get('/channel/posts/{id}/{post}/comments', 'SocialChannelController@comments')->name('channels.posts.comments');
+
+Route::get('/channel/add', 'SocialChannelController@add')->name('channels.add');
+
+Route::put('/channel/post', 'SocialChannelController@publish')->name('channel.post');
+
+Route::get('/channel/{id}/posts/delete/{post}', 'SocialChannelController@delete')->name('channels.posts.delete');
 
 // Socialite Route
 
 Route::get('login/{provider}', 'SocialChannelController@redirectToProvider')
-    ->where(['provider' => 'facebook|google|twitter']);
+    ->where(['provider' => 'facebook|instagram|twitter']);
 
 Route::get('login/{provider}/callback', 'SocialChannelController@handleProviderCallback')
-    ->where(['provider' => 'facebook|google|twitter']);
+    ->where(['provider' => 'facebook|instagram|twitter']);
 
 /*// Socialite Route
 
@@ -87,146 +63,23 @@ Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderFace
 Route::group(['middleware' => [
     'auth'
 ]], function(){
-    Route::get('/facebook/user', 'GraphController@retrieveUserProfile');
+    Route::get('/facebook/user', 'FacebookController@retrieveUserProfile');
 
-<<<<<<< HEAD
->>>>>>> Reset
-// Endpoint that is redirected to after an authentication attempt
-Route::get('/facebook/callback', function(SammyK\LaravelFacebookSdk\LaravelFacebookSdk $fb)
-{
-    // Obtain an access token.
-    try {
-        $token = $fb->getAccessTokenFromRedirect();
-    } catch (Facebook\Exceptions\FacebookSDKException $e) {
-        dd($e->getMessage());
-    }
+    Route::get('/facebook/page', 'FacebookController@getFacebookPages')->name('facebook_page');
 
-    // Access token will be null if the user denied the request
-    // or if someone just hit this URL outside of the OAuth flow.
-    if (! $token) {
-        // Get the redirect helper
-        $helper = $fb->getRedirectLoginHelper();
+    Route::post('/facebook/user', 'FacebookController@publishToProfile');
 
-        if (! $helper->getError()) {
-            abort(403, 'Unauthorized action.');
-        }
+    Route::post('/facebook/page', 'FacebookController@publishToPage');
 
-        // User denied the request
-        dd(
-            $helper->getError(),
-            $helper->getErrorCode(),
-            $helper->getErrorReason(),
-            $helper->getErrorDescription()
-        );
-    }
+    Route::get('/facebook/{name}/posts', 'FacebookController@getFacebookPagePosts')->name('facebook.posts.show');
 
-    if (! $token->isLongLived()) {
-        // OAuth 2.0 client handler
-        $oauth_client = $fb->getOAuth2Client();
-
-        // Extend the access token.
-        try {
-            $token = $oauth_client->getLongLivedAccessToken($token);
-        } catch (Facebook\Exceptions\FacebookSDKException $e) {
-            dd($e->getMessage());
-        }
-    }
-
-    $fb->setDefaultAccessToken($token);
-
-    // Save for later
-    Session::put('fb_user_access_token', (string) $token);
-
-    // Get basic info on the user from Facebook.
-    try {
-        $response = $fb->get('/me?fields=id,name,email');
-    } catch (Facebook\Exceptions\FacebookSDKException $e) {
-        dd($e->getMessage());
-    }
-
-    // Convert the response to a `Facebook/GraphNodes/GraphUser` collection
-    $facebook_user = $response->getGraphUser();
-
-    // Create the user if it does not exist or update the existing entry.
-    // This will only work if you've added the SyncableGraphNodeTrait to your User model.
-<<<<<<< HEAD
-    $user = App\User::createOrUpdateGraphNode($facebook_user);
-
-    // Log the user into Laravel
-    Auth::login($user);
-
-    return redirect('/')->with('message', 'Successfully logged in with Facebook');
+    Route::get('/twitter/{id}/posts', 'TwitterController@getTweetFromChannel')->name('twitter.posts.show');
 });
 
-// Send text message to Telegram Route
-Route::get('send-text-message-to-telegram', 'SocialSharingController@sendTextMessageToTelegram');
+/*Route::get('/facebook/user', 'FacebookController@retrieveUserProfile');
 
-// Send photo to Telegram Route
-Route::get('send-photo-to-telegram', 'SocialSharingController@sendPhotoToTelegram');
+Route::get('/facebook/page', 'FacebookController@getFacebookPages');
 
-// Send audio to Telegram Route
-Route::get('send-audio-to-telegram', 'SocialSharingController@sendAudioToTelegram');
+Route::post('/facebook/user', 'FacebookController@publishToProfile');
 
-// Send document to Telegram Route
-Route::get('send-document-to-telegram', 'SocialSharingController@sendDocumentToTelegram');
-
-// Send video to Telegram Route
-Route::get('send-video-to-telegram', 'SocialSharingController@sendVideoToTelegram');
-
-// Send voice to Telegram Route
-Route::get('send-voice-to-telegram', 'SocialSharingController@sendVoiceToTelegram');
-
-// Send media group to Telegram Route
-Route::get('send-media-group-to-telegram', 'SocialSharingController@sendMediaGroupToTelegram');
-
-// Send point on the map to Telegram Route
-Route::get('send-point-on-the-map-to-telegram', 'SocialSharingController@sendPointOnTheMapToTelegram');
-
-// Send information about a venue to Telegram Route
-Route::get('send-information-about-a-venue-to-telegram', 'SocialSharingController@sendInformationAboutVenueToTelegram');
-
-// Send message with inline button to Telegram Route
-Route::get('send-message-with-inline-button-to-telegram', 'SocialSharingController@sendMessageWithInlineButtonToTelegram');
-
-// Send text tweet Route
-Route::get('send-text-tweet', 'SocialSharingController@sendTextTweet');
-
-// Send tweet with media Route
-Route::get('send-tweet-with-media', 'SocialSharingController@sendTweetWithMedia');
-
-// Send link to Facebook Route
-Route::get('send-link-to-facebook', 'SocialSharingController@sendLinkToFacebook');
-
-// Send photo to Facebook Route
-Route::get('send-photo-to-facebook', 'SocialSharingController@sendPhotoToFacebook');
-
-// Send video to Facebook Route
-Route::get('send-video-to-facebook', 'SocialSharingController@sendVideoToFacebook');
-=======
-    // $user = App\User::createOrUpdateGraphNode($facebook_user);
-
-    // Log the user into Laravel
-    // Auth::login($user);
-
-    return redirect('/channels/create')->with('message', 'Successfully logged in with Facebook');
-});
- 
->>>>>>> Reset
-=======
-    Route::get('/facebook/page', 'GraphController@getFacebookPages')->name('facebook_page');
-
-    Route::post('/facebook/user', 'GraphController@publishToProfile');
-
-    Route::post('/facebook/page', 'GraphController@publishToPage');
-
-    Route::get('/facebook/{name}/posts', 'GraphController@getFacebookPagePosts')->name('facebook.posts.show');
-});
-
-/*Route::get('/facebook/user', 'GraphController@retrieveUserProfile');
-
-Route::get('/facebook/page', 'GraphController@getFacebookPages');
-
-Route::post('/facebook/user', 'GraphController@publishToProfile');
-
-Route::post('/facebook/page', 'GraphController@publishToPage');*/
->>>>>>> Facebook
+Route::post('/facebook/page', 'FacebookController@publishToPage');*/

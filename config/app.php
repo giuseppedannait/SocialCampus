@@ -149,6 +149,8 @@ return [
         SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class, // added line for Socialite
+        Thujohn\Twitter\TwitterServiceProvider::class,
+        SocialiteProviders\Manager\ServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -162,10 +164,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        SammyK\LaravelFacebookSdk\LaravelFacebookSdkServiceProvider::class,
-        Laravel\Socialite\SocialiteServiceProvider::class,
 
     ],
 
@@ -216,16 +214,10 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Facebook' => SammyK\LaravelFacebookSdk\FacebookFacade::class,
-<<<<<<< HEAD
-        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-=======
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-<<<<<<< HEAD
->>>>>>> Reset
-=======
         'Socialite' => Laravel\Socialite\Facades\Socialite::class, // added line for Socialite
->>>>>>> Facebook
+        'Twitter' => Thujohn\Twitter\Facades\Twitter::class,
 
     ],
 
