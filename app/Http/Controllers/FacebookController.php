@@ -69,11 +69,21 @@ class FacebookController extends Controller
 
         //$fb->setDefaultAccessToken(Auth::user()->facebook_access_token);
 
-        $fb->setDefaultAccessToken($this->getUserToken());
+        $access_token = $this->getUserToken();
+
+        $fb->setDefaultAccessToken($access_token);
+
+        $pages = "";
+
+        try {
 
         $response = $fb->get('me/accounts?fields=access_token,category,name,id,perms,link');
 
         $pages = $response->getGraphEdge()->asArray();
+
+        } catch (FacebookSDKException $e) {
+            dd($e); // handle exception
+        }
 
         return $pages;
     }
@@ -109,7 +119,7 @@ class FacebookController extends Controller
 
 
         $user_token = SocialChannel::where([
-            ['name', '=', Auth::user()->name],
+            ['type', '=', 'Profile'],
             ['user_id', '=', Auth::user()->id]
         ])
             ->pluck('access_token')
