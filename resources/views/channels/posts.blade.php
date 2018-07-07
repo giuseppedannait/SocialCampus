@@ -55,14 +55,7 @@
     <script type="text/javascript" src="{{ asset('js/DataTables/datatables.min.js') }}"></script>
 
     <script>
-        /*$(document).ready(function() {
-            $('#posts').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Italian.json"
-                }
-            });
-        } );*/
-
+        
         $(document).ready(function() {
             // Setup - add a text input to each footer cell
             $('#posts tfoot th').each( function () {
