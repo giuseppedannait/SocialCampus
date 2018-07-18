@@ -109,5 +109,32 @@ class InstagramController extends Controller
        //
 
     }
+
+    public function deleteInstagramPost($channel, $post){
+
+        $page = new SocialChannel();
+
+        $page_access_token = $page::where('id', $channel)
+            ->pluck('access_token')
+            ->first();
+
+        $ig_response = "";
+
+        try {
+
+            $ig_response = $this->client->request('DELETE', 'media/' . $post,
+                [
+                    'query' => [
+                        'access_token' => $page_access_token
+                    ]
+                ]);
+
+        } catch (GuzzleException $e) {
+            dd($e);
+        }
+
+        return json_decode($ig_response->getBody()->getContents())->data;
+
+    }
 }
 

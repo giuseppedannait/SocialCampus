@@ -24,15 +24,15 @@
                             <th>Testo</th>
                             <th>Creato il</th>
                             <th>Media</th>
-                            <th><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></th>
-                            <th><span class="glyphicon glyphicon-retweet" aria-hidden="true"></span></th>
-                            <th><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></th>
+                            <th>Favourite<span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span></th>
+                            <th>Retweet<span class="glyphicon glyphicon-retweet" aria-hidden="true"></span></th>
+                            <th>Commenti<span class="glyphicon glyphicon-comment" aria-hidden="true"></span></th>
                             <th>Azioni</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($posts as $post)
-                            <tr>
+                            <tr id="tr_{{ $post['id'] }}">
                                 <td>
                                     @if (isset($post['entities']['media']))
                                         @foreach($post['entities']['media'] as $media)
@@ -98,8 +98,16 @@
                                 </td>
                                 <td>ND</td>
                                 <td>
-                                    <a href="{{ route('channels.posts.delete', ['id' => $channels->id, 'post' => $post['id']]) }}" class="btn btn-danger btn-xs">X</a>
-
+                                    <a href="{{ route('channels.posts.delete', ['id' => $channels->id, 'post' => $post['id']]) }}" class="btn btn-danger btn-xs"
+                                    data-tr="tr_{{ $post['id'] }}"
+                                    data-toggle="confirmation"
+                                    data-btn-ok-label="CANCELLA" data-btn-ok-icon="fa fa-remove"
+                                    data-btn-ok-class="btn btn-sm btn-danger"
+                                    data-btn-cancel-label="Annulla"
+                                    data-btn-cancel-icon="fa fa-chevron-circle-left"
+                                    data-btn-cancel-class="btn btn-sm btn-default"
+                                    data-title="Sei sicuro di voler eliminare questa riga ?"
+                                    data-placement="left" data-singleton="true">X</a>
                                 </td>
                             </tr>
                         @endforeach

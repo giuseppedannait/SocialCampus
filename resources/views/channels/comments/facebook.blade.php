@@ -63,6 +63,8 @@
                                             <a class="btn btn-info btn-xs" href="http://www.facebook.com/{{ $comment['id'] }}" target="_blank">Vai al commento</a>
                                         @endif
 
+                                        <a class="btn btn-success btn-xs" href="{{ route('channels.post.comment.add', [$channels->id, $comment['id']]) }}">Rispondi</a>
+
                                     </td>
                                 </tr>
                             @endforeach

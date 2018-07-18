@@ -9,7 +9,7 @@
         @endif
         <div class="panel panel-default">
             <div class="panel-heading">
-                Social Attualmente Installati e Funzionanti
+                <h4>Social Attualmente Installati e Funzionanti</h4>
             </div>
             <div class="panel-body">
                 @if (count($socials))

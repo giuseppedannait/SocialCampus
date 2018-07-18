@@ -56,7 +56,7 @@
                             @if (Auth::user()->roles->first()->name === 'SOCIAL_USER')
                                 <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
                                 <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
-                            @elseif (Auth::user()->roles->first()->name === 'SOCIAL_ADMIN')
+                            @elseif (Auth::user()->roles->first()->name === 'SMM')
                                 <li><a class="n" href="{{ url('/users') }}">Utenti</a></li>
                                 <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
                                 <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
@@ -110,6 +110,7 @@
 
 <!-- Bootstrap JS -->
 <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.min.js"></script>
 
 @yield('scripts')
 

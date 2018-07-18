@@ -37,7 +37,7 @@
                 </thead>
                 <tbody>
                 @foreach($posts as $post)
-                    <tr>
+                    <tr id="tr_{{ $post->id }}">
                         <td>PHOTO</td>
                         <td>
                             @if (isset($post->caption))
@@ -46,12 +46,12 @@
                         </td>
                         <td>
                             @if (isset($post->created_time))
-                                <a href="{{ $post->link }}" target="_blank">{{ $post->created_time }}</a>
+                                <a href="{{ $post->link }}" target="_blank">{{ date('d/m/Y - H:i.s', $post->created_time) }}</a>
                             @endif
                         </td>
                         <td>
                             @if (isset($post->images))
-                                <img class="fb-stream-pic" src="{{ $post->images->standard_resolution->url  }}">
+                                <a href="{{ $post->link }}" target="_blank"><img class="fb-stream-pic" src="{{ $post->images->standard_resolution->url  }}"></a>
                             @endif
                         </td>
                         <td align="center">
@@ -75,13 +75,16 @@
                         </td>
                         <td>
                             <a href="{{ route('channels.posts.comments', ['id' => $channels->id, 'post' => $post->id]) }}" class="btn btn-info btn-xs">Commenti</a>
-                            <form action="" method="POST" style="display:inline-block">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-                                <button class="btn btn-danger btn-xs" alt="Elimina il post">
-                                    <span>X</span>
-                                </button>
-                            </form>
+                            <a href="{{ route('channels.posts.delete', ['id' => $channels->id, 'post' => $post->id]) }}" class="btn btn-danger btn-xs"
+                               data-tr="tr_{{ $post->id }}"
+                               data-toggle="confirmation"
+                               data-btn-ok-label="CANCELLA" data-btn-ok-icon="fa fa-remove"
+                               data-btn-ok-class="btn btn-sm btn-danger"
+                               data-btn-cancel-label="Annulla"
+                               data-btn-cancel-icon="fa fa-chevron-circle-left"
+                               data-btn-cancel-class="btn btn-sm btn-default"
+                               data-title="Sei sicuro di voler eliminare questa riga ?"
+                               data-placement="left" data-singleton="true">X</a>
                         </td>
                     </tr>
                 @endforeach
