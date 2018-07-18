@@ -121,6 +121,11 @@ class SocialChannelController extends Controller
         return view('channels.add', compact('channels', $channels));
     }
 
+    public function addComment($channel_id, $post_id)
+    {
+        return view('channels.comments.add', ['channel_id' => $channel_id, 'post_id' => $post_id]);
+    }
+
     public function publish(Request $request)
     {
         $post = [];
@@ -182,6 +187,7 @@ class SocialChannelController extends Controller
         }
 
         return redirect()->action('SocialChannelController@index');
+
     }
 
     /**
@@ -232,7 +238,8 @@ class SocialChannelController extends Controller
         $posts = $this->deletePost($channel, $provider, $id_post);
 
         session()->flash('status', 'Post correttamente eliminato.');
-        return redirect()->action('SocialChannelController@posts', $channel->id );
+        //return redirect()->action('SocialChannelController@posts', $channel->id );
+        return $posts;
     }
 
     /**
@@ -495,8 +502,6 @@ class SocialChannelController extends Controller
 
             case 'facebook':
 
-                dd($socialChannel);
-
                 $url = 'https://www.facebook.com/profile.php?'.'';
 
                 return $url;
@@ -530,7 +535,9 @@ class SocialChannelController extends Controller
 
                 $posts = $graph->destroyPost($socialChannel->id, $id_post);
 
-                return $posts;
+                //return $posts;
+
+                return response()->json(['success'=>"Post cancellato correttamente.", 'tr'=>'tr_'.$id_post]);
 
                 break;
 
@@ -540,16 +547,67 @@ class SocialChannelController extends Controller
 
                 $posts = $tw->deleteTweetFromChannel($socialChannel->id, $id_post);
 
-                return $posts;
+                //return $posts;
+
+                return response()->json(['success'=>"Post cancellato correttamente.", 'tr'=>'tr_'.$id_post]);
 
                 break;
 
 
             case 'instagram':
 
+                $ig = new InstagramController();
+
+                $posts = $ig->deleteInstagramPost($socialChannel->id, $id_post );
+
+                //return($posts);
+
+                return response()->json(['success'=>"Post cancellato correttamente.", 'tr'=>'tr_'.$id_post]);
+
                 break;
         }
 
+    }
+
+    public function publishComment(Request $request, $channel_id, $post_id)
+    {
+        $comment['message'] = $request->input('comment');
+
+        $provider_id = SocialChannel::with('socials')->where('id', $channel_id)->pluck('social_id')->first();
+        $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
+
+        switch ($provider) {
+
+            case 'facebook':
+
+                $fb = new Facebook();
+
+                $graph = new FacebookController($fb);
+
+                $post = $graph->commentToPost($channel_id, $post_id, $comment);
+
+                break;
+
+            case 'twitter':
+
+
+                break;
+
+            case 'instagram':
+
+
+                break;
+        }
+
+        if ($post) {
+            session()->flash('status', ' Commento inserito correttamente');
+        } else {
+            session()->flash('status', ' Commento non inserito. Controllare eventuali errori segnalati.');
+        }
+
+        // return redirect()->action('SocialChannelController@comments', ['']);
+
+        return redirect()->route('channels.posts', ['id' => $channel_id]);
     }
 
 }

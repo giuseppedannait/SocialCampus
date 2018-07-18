@@ -302,4 +302,32 @@ class FacebookController extends Controller
 
     }
 
+    public function commentToPost($channel_id, $post_id, $comment){
+
+        $page = new SocialChannel();
+
+        $fb = new Facebook();
+
+        $fb->setDefaultAccessToken($this->getUserToken());
+
+        $page_access_token = $page::where('id', $channel_id)
+            ->pluck('access_token')
+            ->first();
+
+        $page_id = $page::where('id', $channel_id)
+            ->pluck('channel_id')
+            ->first();
+
+        $fb_response="";
+
+        try {
+            $fb_response = $fb->post('/' . $post_id . '/comments', $comment, $page_access_token);
+        } catch (FacebookSDKException $e) {
+            dd($e); // handle exception
+        }
+
+        return $fb_response;
+
+    }
+
 }

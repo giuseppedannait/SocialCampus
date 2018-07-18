@@ -25,19 +25,19 @@
                     <th>Testo</th>
                     <th>Creato il</th>
                     <th>Media</th>
-                    <th width="25px"><img width="25px" src="/public/icons/Like-500px.gif"></th>
-                    <th width="25px"><img width="25px" src="/public/icons/Love-500px.gif"></th>
-                    <th width="25px"><img width="25px" src="/public/icons/Haha-500px.gif"></th>
-                    <th width="25px"><img width="25x" src="/public/icons/Sad-500px.gif"></th>
-                    <th width="25px"><img width="25px" src="/public/icons/Wow-500px.gif"></th>
-                    <th width="25px"><img width="25px" src="/public/icons/Angry-500px.gif"></th>
-                    <th width="25px"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span></th>
+                    <th width="25px">Like <img width="25px" src="/public/icons/Like-500px.gif"></th>
+                    <th width="25px">Love <img width="25px" src="/public/icons/Love-500px.gif"></th>
+                    <th width="25px">Haha<img width="25px" src="/public/icons/Haha-500px.gif"></th>
+                    <th width="25px">Sad<img width="25x" src="/public/icons/Sad-500px.gif"></th>
+                    <th width="25px">Wow<img width="25px" src="/public/icons/Wow-500px.gif"></th>
+                    <th width="25px">Angry<img width="25px" src="/public/icons/Angry-500px.gif"></th>
+                    <th width="25px">Commenti<span class="glyphicon glyphicon-comment" aria-hidden="true"></span></th>
                     <th width="15%">Azioni</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($posts['posts'] as $post)
-                    <tr>
+                    <tr id="tr_{{ $post['id'] }}">
                         <td>
                             @if (isset($post['attachments']))
                                 @foreach($post['attachments'] as $attachment)
@@ -188,7 +188,16 @@
                             </td>
                             <td>
                                 <a href="{{ route('channels.posts.comments', ['id' => $channels->id, 'post' => $post['id']]) }}" class="btn btn-info btn-xs">Commenti</a>
-                                <a href="{{ route('channels.posts.delete', ['id' => $channels->id, 'post' => $post['id']]) }}" class="btn btn-danger btn-xs">X</a>
+                                <a href="{{ route('channels.posts.delete', ['id' => $channels->id, 'post' => $post['id']]) }}" class="btn btn-danger btn-xs"
+                                   data-tr="tr_{{ $post['id'] }}"
+                                   data-toggle="confirmation"
+                                   data-btn-ok-label="CANCELLA" data-btn-ok-icon="fa fa-remove"
+                                   data-btn-ok-class="btn btn-sm btn-danger"
+                                   data-btn-cancel-label="Annulla"
+                                   data-btn-cancel-icon="fa fa-chevron-circle-left"
+                                   data-btn-cancel-class="btn btn-sm btn-default"
+                                   data-title="Sei sicuro di voler eliminare questa riga ?"
+                                   data-placement="left" data-singleton="true">X</a>
                             </td>
                         </tr>
                     @endforeach

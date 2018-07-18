@@ -4,13 +4,11 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use SammyK\LaravelFacebookSdk\SyncableGraphNodeTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Authenticatable
 {
     use Notifiable;
-    use SyncableGraphNodeTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -18,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'facebook_access_token', 'facebook_user_id'
+        'name', 'email', 'password', 'id_smm'
     ];
 
     /*protected static $graph_node_field_aliases = [
@@ -79,4 +77,5 @@ class User extends Authenticatable
         return $this->belongsToMany('App\SocialChannel')
             ->withTimestamps();
     }
+
 }

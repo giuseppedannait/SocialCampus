@@ -13,10 +13,11 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, $role1, $role2)
     {
-        if (! $request->user()->hasRole($role)) {
-            abort(401, 'Questa operazione non è consentita.');
+        if ((! $request->user()->hasRole($role1)) AND (! $request->user()->hasRole($role2)))
+        {
+            abort(401, 'Questa operazione non è consentita. I tuoi privilegi non sono sufficienti.');
         }
         return $next($request);
     }

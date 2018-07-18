@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Role;
+Use App\SocialChannel;
+
+Use Auth;
+
 use DB;
 use Illuminate\Http\Request;
 Use App\Http\Controllers\SuperAdminController;
 Use App\Http\Controllers\AdminController;
-use SammyK\LaravelFacebookSdk\SyncableGraphNodeTrait;
 
 class UserController extends Controller
 {
-    use SyncableGraphNodeTrait;
 
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:SOCIAL_ADMIN');
+        $this->middleware('role:SMM,SOCIAL_SUPER_ADMIN');
     }
 
     /**
@@ -26,8 +29,25 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('roles')->latest()->paginate();
-        return view('users.index', compact('users',$users));
+        if (isset(Auth::user()->roles->first()->name))
+        {
+            if (Auth::user()->roles->first()->name === 'SOCIAL_SUPER_ADMIN')
+            {
+                $users = User::with('roles')->latest()->paginate();
+                $roles = Role::all();
+            }
+            elseif (Auth::user()->roles->first()->name === 'SMM')
+            {
+                $users = User::with('roles')->where('id_smm', '=', Auth::user()->id )->paginate();
+                $roles = Role::all();
+            }
+            else
+            {
+                return view('home');
+            }
+        }
+
+        return view('users.index', ['users' => $users, 'roles' => $roles]);
     }
 
     /**
@@ -37,7 +57,13 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all();
+        $associates = User::whereHas('roles', function ($q) {
+            $q->where('name', '=', 'SMM');
+        })->get();
+        $selectedRole = 'SOCIAL_USER';
+
+        return view('users.create', ['roles' => $roles, 'selectedRole' => $selectedRole, 'associates' => $associates]);
     }
 
     /**
@@ -48,9 +74,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create($request->all());
-        return redirect()->route('users.index')
-                ->with('success','Utente creato correttamente.');
+        //User::create($request->all());
+        $user = new User();
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->password = bcrypt($request->get('password'));
+
+        $user->save();
+
+        $role = $request->get('role');
+
+        $user->roles()->sync($role);
+
+        return redirect()->route('users.index')->with('success','Utente creato correttamente.');
 
     }
 
@@ -62,7 +98,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show', compact('user', $user));
+        $associates = DB::table('users')->where('id_smm', '=', $user->id)->get();
+        $smm = DB::table('users')->where('id', '=', $user->id_smm)->first();
+
+        $channels = SocialChannel::with('socials')->latest()->where('user_id', $user->id)->orderBy('name')->paginate();
+
+        return view('users.show', ['user' => $user, 'associates' => $associates, 'smm' => $smm, 'channels' => $channels]);
     }
 
     /**
@@ -75,9 +116,13 @@ class UserController extends Controller
     {
         $user = User::with('roles')->where('id', $user->id)->first();
         $selectedRole = @$user->roles->first()->name;
-        $roles = DB::table('roles')->orderBy('name', 'asc')->pluck('name', 'id');
 
-        return view('users.update', compact('user', 'roles', 'selectedRole'));
+        $roles = Role::all();
+        $associates = User::whereHas('roles', function ($q) {
+            $q->where('name', '=', 'SMM');
+        })->get();
+
+        return view('users.update', ['user' => $user, 'roles' => $roles, 'selectedRole' => $selectedRole, 'associates' => $associates]);
     }
 
     /**
@@ -87,11 +132,26 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        $this->validate($request,$this->rules($user->id));
+        // $this->validate($request,$this->rules($user->id));
 
-        return $this->save($request,$user);
+        // return $this->save($request,$user);
+
+        $user = User::find($id);
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->password = $request->get('password');
+
+        $user->id_smm = $request->get('associate');
+
+        $user->save();
+
+        $role = $request->get('role');
+
+        $user->roles()->sync($role);
+
+        return redirect('users');
     }
 
     /**
@@ -101,15 +161,21 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        if ($user->delete()) {
-            session()->flash('status', 'User deleted successfully');
-        } else {
-            session()->flash('status', 'Unable to delete user. Please try again');
+        $user = User::find($id);
+
+        if ($user->delete())
+        {
+            session()->flash('status', 'Utente eliminato correttamente.');
+        }
+        else
+        {
+            session()->flash('status', "Impossibile eliminare l'utente. Riprovare.");
         }
 
-        return back();
+        //return redirect('users');
+        return response()->json(['success'=>"Utente cancellato correttamente.", 'tr'=>'tr_'.$id]);
     }
 
     private function rules(User $user = null)
