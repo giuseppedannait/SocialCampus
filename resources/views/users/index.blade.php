@@ -10,7 +10,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="btn-group">
-                    <a href="{{ route('users.create') }}" class="btn btn-success btn-xs">Aggiungi Utente</a>
+                    <a href="{{ route('users.create') }}" class="btn btn-success btn-sl">Aggiungi Utente</a>
                 </div>
             </div>
         </div>

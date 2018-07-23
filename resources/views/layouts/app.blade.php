@@ -45,29 +45,29 @@
             <ul id="navbar" class="collapse navbar-collapse">                <!-- Left Side Of Navbar -->
                 <ul class="nav navbar-nav">
 
-                    <li><a href="{{ action('HomeController@index') }}">Dashboard</a></li>
-
                     @guest
 
                     @else
 
                         @if (isset(Auth::user()->roles->first()->name))
 
-                            @if (Auth::user()->roles->first()->name === 'SOCIAL_USER')
-                                <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
-                                <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
-                            @elseif (Auth::user()->roles->first()->name === 'SMM')
-                                <li><a class="n" href="{{ url('/users') }}">Utenti</a></li>
-                                <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
-                                <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
-                            @elseif (Auth::user()->roles->first()->name === 'SOCIAL_SUPER_ADMIN')
-                                <li><a class="" href="{{ url('/users') }}">Utenti</a></li>
-                                <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
-                                <li><a class="" href="{{ url('/socials') }}">Gestione Provider</a></li>
-                                <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
-                            @endif
+                            <li><a href="{{ action('HomeController@index') }}">Dashboard</a></li>
 
-                        @endif
+                            @if (Auth::user()->roles->first()->name === 'SOCIAL_USER')
+                                    <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
+                                    <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
+                                @elseif (Auth::user()->roles->first()->name === 'SMM')
+                                    <li><a class="n" href="{{ url('/users') }}">Utenti</a></li>
+                                    <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
+                                    <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
+                                @elseif (Auth::user()->roles->first()->name === 'SOCIAL_SUPER_ADMIN')
+                                    <li><a class="" href="{{ url('/users') }}">Utenti</a></li>
+                                    <li><a class="" href="{{ url('/channels') }}">Gestione Canali</a></li>
+                                    <li><a class="" href="{{ url('/socials') }}">Gestione Provider</a></li>
+                                    <li><a class="" href="{{ url('/channel/add') }}">Scrivi Post</a></li>
+                                @endif
+
+                            @endif
 
                     @endguest
 

@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('home');
-});
+});*/
+
+Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
@@ -32,6 +34,8 @@ Route::resource('socials', 'SocialController');
 // Social Channel
 Route::resource('channels', 'SocialChannelController');
 
+Route::get('channels/user/{user_id}', 'SocialChannelController@index')->name('channels.user');
+
 Route::get('/channel/posts/{id}', 'SocialChannelController@posts')->name('channels.posts');
 
 Route::get('/channel/{id}/posts/{post}/comments', 'SocialChannelController@comments')->name('channels.posts.comments');
@@ -41,6 +45,8 @@ Route::get('/channel/{channel_id}/posts/{post_id}/comment/add', 'SocialChannelCo
 Route::put('/channel/{channel_id}/posts/{post_id}/comment/publish', 'SocialChannelController@publishComment')->name('channels.post.comment.publish');
 
 Route::get('/channel/add', 'SocialChannelController@add')->name('channels.add');
+
+Route::get('/channel/user/{user_id}/add', 'SocialChannelController@add')->name('channels.user.add');
 
 Route::put('/channel/post', 'SocialChannelController@publish')->name('channel.post');
 

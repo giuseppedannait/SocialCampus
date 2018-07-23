@@ -14,6 +14,7 @@
                     <h2>Benvenuti su SocialCampus.</h2>
                     <h3>A Social Media Management App powered by eCampus.</h3>
                     <h4>Developed by Ing. Giuseppe D'Anna.</h4>
+                    <h5>Version @if (isset($version)) {{ $version }} @endif</h5>
                 </div>
             </div>
         </div>

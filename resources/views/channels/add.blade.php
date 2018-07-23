@@ -13,7 +13,7 @@
                         @csrf
                         <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3>Componi il post</h3>
+                            <h3>Componi il post @if (isset($user)) - Utente selezionato : {{ $user->name }} @endif</h3>
                         </div>
                         <div class="panel-body">
                             <div class="form-group">

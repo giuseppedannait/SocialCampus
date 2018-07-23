@@ -7,7 +7,7 @@
                 {{	session()->get('status') }}
             </p>
         @endif
-        <div class="col-sm-8 col-sm-offset-3">
+        <div class="col-sm-6 col-sm-offset-3">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h2>Aggiungi i tuoi Canali Social</h2>

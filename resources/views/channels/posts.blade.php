@@ -78,6 +78,7 @@
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.19/i18n/Italian.json",
                 },
+                "order": [[ 2, "desc" ]],
                 dom: 'Bfrtip',
                 buttons: [
                     'copy', 'csv', 'excel', 'pdf', 'print', {

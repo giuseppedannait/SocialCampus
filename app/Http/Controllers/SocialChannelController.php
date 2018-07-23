@@ -33,19 +33,29 @@ class SocialChannelController extends Controller
     {
         $this->middleware('auth');
 //      $this->middleware('role:SOCIAL_SUPER_ADMIN');
-
     }
 
 
-    public function index()
+    public function index($user_id = null)
     {
-        if (Auth::check()) {
+        /*if (Auth::check()) {
             $user = Auth::user()->id;
             $role = Auth::user()->role;
+        }*/
+
+        if (isset($user_id))
+        {
+            $user = $user_id;
+        }
+        else
+        {
+            $user = Auth::user()->id;
         }
 
         $channels = SocialChannel::with('socials')->latest()->where('user_id', $user)->orderBy('name')->paginate();
-        return view('channels.index', compact('channels', $channels));
+        $user = User::find($user_id);
+
+        return view('channels.index', ['channels' => $channels, 'user' => $user]);
     }
 
     /**
@@ -110,15 +120,29 @@ class SocialChannelController extends Controller
         //
     }
 
-    public function add()
+    public function add($user_id = null)
     {
-        if (Auth::check()) {
+        /*if (Auth::check()) {
             $user = Auth::user()->id;
             $role = Auth::user()->role;
+        }*/
+
+        if (isset($user_id))
+        {
+            $user = $user_id;
+        }
+        else
+        {
+            if (Auth::check())
+            {
+                $user = Auth::user()->id;
+            }
         }
 
         $channels = SocialChannel::with('socials')->latest()->where('user_id', $user)->orderBy('name')->paginate();
-        return view('channels.add', compact('channels', $channels));
+        $user = User::find($user_id);
+
+        return view('channels.add', ['channels' => $channels, 'user' => $user]);
     }
 
     public function addComment($channel_id, $post_id)
@@ -186,7 +210,11 @@ class SocialChannelController extends Controller
             session()->flash('status', ' Post non inserito. Controllare eventuali errori segnalati.');
         }
 
-        return redirect()->action('SocialChannelController@index');
+        //return redirect()->action('SocialChannelController@index');
+
+        return redirect()->route('users.index');
+
+        //return view('channels.index');
 
     }
 
@@ -202,8 +230,11 @@ class SocialChannelController extends Controller
         $channel->delete();
 
         // redirect
-        session()->flash('status', 'Canale correttamente eliminato.');
-        return redirect()->action('SocialChannelController@index');
+        //session()->flash('status', 'Canale correttamente eliminato.');
+        //return redirect()->action('SocialChannelController@index');
+
+        return response()->json(['success'=>"Canale cancellato correttamente.", 'tr'=>'tr_'.$id]);
+
     }
 
     public function posts($socialChannel)

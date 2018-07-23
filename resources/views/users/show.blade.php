@@ -14,6 +14,9 @@
                         <a href="{{ url()->previous() }}" class="btn btn-danger btn-xs"><< Indietro</a>
                         &nbsp;
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success btn-xs">Modifica Utente</a>
+                        @if (count($channels))
+                            <a href="{{ route('channels.user', $user->id) }}" class="btn btn-info btn-xs">Gestisci Canali</a>
+                        @endif
                     </div>
                 </div>
              </div>
@@ -97,13 +100,15 @@
                             <tr>
                                 <th>Canale</th>
                                 <th>Nome</th>
+                                <th>Azioni</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($channels as $channel)
                                 <tr>
-                                    <td><a class="btn btn-social-icon btn-{{ @$channel->socials->name }}"><span class="fa fa-{{ @$channel->socials->name }}"</td>
+                                    <td><a class="btn btn-social-icon btn-{{ @$channel->socials->name }}"><span class="fa fa-{{ @$channel->socials->name }}"</a></td>
                                     <td><a href="{{ $channel->channel_URL }}" target="_blank">{{ $channel->name }}</a></td>
+                                    <td><a href="{{ route('channels.user', $user->id) }}" class="btn btn-info btn-xs">Gestisci</a></td>
                                 </tr>
                             @endforeach
                             </tbody>

@@ -1,0 +1,52 @@
+Installazione e Configurazione
+
+1.  Installazione XAMPP
+Installare un ambiente XAMPP effettuando la versione idonea per il sistema operativo installato sul server.
+Le versioni già compilate per il download sono reperibili all’indirizzo :
+https://www.apachefriends.org/it/index.html
+
+2.  Installazione del Composer
+Per prima cosa installiamo il Composer.
+L'installazione di Composer è molto semplice in quanto può essere eseguita tramite la riga di comando.
+Per il progetto è stato usato OS X, ma quanto segue dovrebbe essere lo stesso per qualsiasi sistema operativo *nix.
+Quindi avviare Terminal ed eseguire i seguenti comandi:
+
+~ $ curl -s https://getcomposer.org/installer | php
+
+3.  Download del Codice Sorgente
+
+Il codice sorgente è disponibile all’URL :
+https://github.com/giuseppedannait/SocialCampus.git
+
+In alternativa è possibile usare anche il Repository GIT su BitBucket :
+https://bitbucket.org/giuseppedannait/socialcampus.git
+
+L'accesso ai Repository deve essere autorizzato.
+
+Per effettuare il checkout, una volta sul server XAMPP correttamente configurato, lanciare il seguente comando per fare il checkout del codice sorgente :
+
+~ $ git checkout https://github.com/giuseppedannait/SocialCampus.git
+
+4. Installazione SocialCampus
+
+Una volta effettuato il download, è possibile lanciare l’installazione della piattaforma attraverso il composer, lanciando il comando:
+~ $ php composer.phar install
+
+5.  Configurazione dell’Environment
+Per la configurazione tra i diversi environment, è stato predisposto un file nel quale è possibile settare tutte le informazioni relative all’accesso Database.
+Il file ha il nome “.env” ed è presente nella cartella principale dell’applicazione.
+
+6.  Configurazione del Database
+Una volta settato correttamente l’environment con i dati di accesso per un database mysql, è necessario configurare quest’ultimo per l’interazione
+con l’applicazione. Possiamo lanciare la configurazione del database attraverso il lancio delle migrations.
+Per fare questo è necessario recarsi nella cartella dell’applicazione, attraverso una connessione SSH sul server, e lanciare il comando:
+
+~ $ php artisan migrate -seed
+
+Questo comando configurerà le tabelle e popolerà le stesse con i dati di default.
+
+7.  Lancio Applicazione
+Una volta effettuata la migrations, sarà possibile lanciare l’applicazione dal server installato,
+semplicemente andando con il browser all’indirizzo del web server attivo.
+
+L’utente amministratore potrà loggarsi con l’account "admin@socialcampus.giuseppedanna.com" e la password "password"
