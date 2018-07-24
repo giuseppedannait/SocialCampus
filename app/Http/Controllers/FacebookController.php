@@ -115,12 +115,21 @@ class FacebookController extends Controller
         }
     }
 
-    public function getUserToken(){
+    public function getUserToken($user_id = null)
+    {
 
+        if (isset($user_id))
+        {
+            $user = $user_id;
+        }
+        else
+        {
+            $user = Auth::user()->id;
+        }
 
         $user_token = SocialChannel::where([
             ['type', '=', 'Profile'],
-            ['user_id', '=', Auth::user()->id]
+            ['user_id', '=', $user]
         ])
             ->pluck('access_token')
             ->first();
@@ -129,7 +138,7 @@ class FacebookController extends Controller
 
     }
 
-    public function publishToPage($channel, $post){
+    public function publishToPage($channel, $post, $user){
 
         $page = new SocialChannel();
 
@@ -137,7 +146,7 @@ class FacebookController extends Controller
 
         //$fb->setDefaultAccessToken(Auth::user()->facebook_access_token);
 
-        $fb->setDefaultAccessToken($this->getUserToken());
+        $fb->setDefaultAccessToken($this->getUserToken($user));
 
         $page_access_token = $page::where('id', $channel)
             ->pluck('access_token')
@@ -215,12 +224,21 @@ class FacebookController extends Controller
         }
     }
 
-    public function getFacebookPagePosts($page_name){
+    public function getFacebookPagePosts($page_name, $user_id = null)
+    {
+        if (isset($user_id))
+        {
+            $user = $user_id;
+        }
+        else
+        {
+            $user = Auth::user()->id;
+        }
 
         $fb = new Facebook();
         //$fb->setDefaultAccessToken(Auth::user()->facebook_access_token);
 
-        $fb->setDefaultAccessToken($this->getUserToken());
+        $fb->setDefaultAccessToken($this->getUserToken($user));
 
         $page = new SocialChannel();
 
@@ -242,12 +260,12 @@ class FacebookController extends Controller
 
     }
 
-    public function getFacebookCommentsPosts($id){
+    public function getFacebookCommentsPosts($id, $user = null){
 
         $fb = new Facebook();
         //$fb->setDefaultAccessToken(Auth::user()->facebook_access_token);
 
-        $fb->setDefaultAccessToken($this->getUserToken());
+        $fb->setDefaultAccessToken($this->getUserToken($user));
 
         $page = new SocialChannel();
 
@@ -271,13 +289,13 @@ class FacebookController extends Controller
 
     }
 
-    public function destroyPost($channel, $id){
+    public function destroyPost($channel, $id, $user = null){
 
         $page = new SocialChannel();
 
         $fb = new Facebook();
 
-        $fb->setDefaultAccessToken($this->getUserToken());
+        $fb->setDefaultAccessToken($this->getUserToken($user));
 
         $page_access_token = $page::where('id', $channel)
             ->pluck('access_token')
@@ -302,13 +320,13 @@ class FacebookController extends Controller
 
     }
 
-    public function commentToPost($channel_id, $post_id, $comment){
+    public function commentToPost($channel_id, $post_id, $comment, $user = null){
 
         $page = new SocialChannel();
 
         $fb = new Facebook();
 
-        $fb->setDefaultAccessToken($this->getUserToken());
+        $fb->setDefaultAccessToken($this->getUserToken($user));
 
         $page_access_token = $page::where('id', $channel_id)
             ->pluck('access_token')

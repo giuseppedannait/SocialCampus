@@ -11,6 +11,11 @@
                     <form action="{{ route('channel.post') }}" method="POST" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
+                        @if (isset($user))
+                            <input type="hidden" name="user" value="{{ $user->id }}">
+                        @else
+                            <input type="hidden" name="user" value="">
+                        @endif
                         <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3>Componi il post @if (isset($user)) - Utente selezionato : {{ $user->name }} @endif</h3>

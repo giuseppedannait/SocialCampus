@@ -170,6 +170,8 @@ class SocialChannelController extends Controller
             $post['type'] = 'link';
         }
 
+        $user = $request->input('user');
+
         $channels = $request->input('channels');
 
         foreach ($channels as $channel) {
@@ -184,7 +186,7 @@ class SocialChannelController extends Controller
 
                     $graph = new FacebookController($fb);
 
-                    $post[$channel] = $graph->publishToPage($channel, $post);
+                    $post[$channel] = $graph->publishToPage($channel, $post, $user);
 
                     break;
 
@@ -210,11 +212,8 @@ class SocialChannelController extends Controller
             session()->flash('status', ' Post non inserito. Controllare eventuali errori segnalati.');
         }
 
-        //return redirect()->action('SocialChannelController@index');
 
-        return redirect()->route('users.index');
-
-        //return view('channels.index');
+        return view('home');
 
     }
 
@@ -241,10 +240,12 @@ class SocialChannelController extends Controller
     {
         $channel = SocialChannel::where('id', $socialChannel)->with('socials')->first();
 
+        $user = SocialChannel::where('id', $socialChannel)->pluck('user_id')->first();
+
         $provider_id = SocialChannel::with('socials')->where('id', $socialChannel)->pluck('social_id')->first();
         $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
 
-        $posts = $this->getPosts($channel, $provider);
+        $posts = $this->getPosts($channel, $provider, $user);
         return view('channels.posts', ['channels' => $channel, 'posts' => $posts, 'provider' => $provider]);
     }
 
@@ -252,10 +253,12 @@ class SocialChannelController extends Controller
     {
         $channel = SocialChannel::where('id', $socialChannel)->with('socials')->first();
 
+        $user = SocialChannel::where('id', $socialChannel)->pluck('user_id')->first();
+
         $provider_id = SocialChannel::with('socials')->where('id', $socialChannel)->pluck('social_id')->first();
         $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
 
-        $posts = $this->getPosts($channel, $provider);
+        $posts = $this->getPosts($channel, $provider, $user);
         return view('channels.comments', ['channels' => $channel, 'posts' => $posts, 'provider' => $provider, 'post_id' => $id_post]);
     }
 
@@ -443,8 +446,16 @@ class SocialChannelController extends Controller
         return redirect()->to('/channels'); // Redirect to a secure page
     }
 
-    public function getPosts(SocialChannel $socialChannel, $provider){
-
+    public function getPosts(SocialChannel $socialChannel, $provider, $user_id)
+    {
+        if (isset($user_id))
+        {
+            $user = $user_id;
+        }
+        else
+        {
+            $user = Auth::user()->id;
+        }
         switch ($provider) {
 
             case 'facebook':
@@ -452,7 +463,7 @@ class SocialChannelController extends Controller
                 $fb = new Facebook();
                 $graph = new FacebookController($fb);
 
-                $posts = $graph->getFacebookPagePosts($socialChannel->name);
+                $posts = $graph->getFacebookPagePosts($socialChannel->name, $user);
 
                 return $posts;
 
