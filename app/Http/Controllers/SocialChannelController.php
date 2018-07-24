@@ -90,10 +90,12 @@ class SocialChannelController extends Controller
 
         $channel = SocialChannel::where('id', $socialChannel)->with('socials')->first();
 
+        $user = SocialChannel::where('id', $socialChannel)->pluck('user_id')->first();
+
         $provider_id = SocialChannel::with('socials')->where('id', $socialChannel)->pluck('social_id')->first();
         $provider = Social::where('id', $provider_id)->where('id', $provider_id)->pluck('name')->first();
 
-        $posts = $this->getPosts($channel, $provider);
+        $posts = $this->getPosts($channel, $provider, $user);
         return view('channels.show', ['channels' => $channel, 'posts' => $posts, 'provider' => $provider]);
     }
 
